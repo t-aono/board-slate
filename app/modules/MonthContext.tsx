@@ -1,4 +1,8 @@
+import { Dispatch, ReactNode, createContext, useReducer } from "react";
 import dayjs from "dayjs";
+
+export const MonthContext = createContext<typeof initialState | null>(null);
+export const MonthDispatchContext = createContext<Dispatch<{ type: Action }> | null>(null);
 
 export const initialState = {
   displayMonth: dayjs().format("YYYY-MM"),
@@ -6,11 +10,20 @@ export const initialState = {
 };
 
 export enum Action {
-  CHANGE_NEXT,
-  CHANGE_PREVIOUS,
+  CHANGE_NEXT = "change_next",
+  CHANGE_PREVIOUS = "change_previous",
 }
 
-export function monthReducer(state: typeof initialState, action: { type: Action }) {
+export function MonthProvider({ children }: { children: ReactNode }) {
+  const [month, dispatch] = useReducer(monthReducer, initialState);
+  return (
+    <MonthContext.Provider value={month}>
+      <MonthDispatchContext.Provider value={dispatch}>{children}</MonthDispatchContext.Provider>
+    </MonthContext.Provider>
+  );
+}
+
+function monthReducer(state: typeof initialState, action: { type: Action }) {
   switch (action.type) {
     case Action.CHANGE_NEXT: {
       const nextMonth = dayjs(state.displayMonth).add(+1, "month");

@@ -1,6 +1,5 @@
 import { useContext } from "react";
-import { MonthContext, MonthDispatchContext } from "../page";
-import { Action } from "../modules/monthReducer";
+import { Action, MonthContext, MonthDispatchContext } from "../modules/MonthContext";
 
 export default function MonthSelect() {
   const month = useContext(MonthContext);

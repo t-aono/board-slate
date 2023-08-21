@@ -1,14 +1,9 @@
 import { useContext, useState } from "react";
-import { MonthContext } from "../page";
 import japaneseHolidays from "japanese-holidays";
 import dayjs from "dayjs";
+import { MonthContext } from "../modules/MonthContext";
 
-type Props = {
-  dates: number[];
-  plans: any;
-};
-
-export default function Calendar({ dates, plans }: Props) {
+export default function Calendar() {
   const [siteCount, setSiteCount] = useState(3);
   const month = useContext(MonthContext);
 
@@ -29,7 +24,7 @@ export default function Calendar({ dates, plans }: Props) {
 
   return (
     <div>
-      {dates.map((date) => (
+      {month?.dates.map((date) => (
         <div key={date} className="flex date-row">
           <div className={`border w-16 text-center ${dateColor(date)}`}>{dateWithDayChar(date)}</div>
         </div>
