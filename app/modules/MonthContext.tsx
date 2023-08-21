@@ -2,7 +2,7 @@ import { Dispatch, ReactNode, createContext, useReducer } from "react";
 import dayjs from "dayjs";
 
 export const MonthContext = createContext<typeof initialState | null>(null);
-export const MonthDispatchContext = createContext<Dispatch<{ type: Action }> | null>(null);
+export const MonthDispatchContext = createContext<Dispatch<{ type: Action; value: string }> | null>(null);
 
 export const initialState = {
   displayMonth: dayjs().format("YYYY-MM"),
@@ -12,6 +12,7 @@ export const initialState = {
 export enum Action {
   CHANGE_NEXT = "change_next",
   CHANGE_PREVIOUS = "change_previous",
+  CHANGE_VALUE = "change_value",
 }
 
 export function MonthProvider({ children }: { children: ReactNode }) {
@@ -23,7 +24,7 @@ export function MonthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-function monthReducer(state: typeof initialState, action: { type: Action }) {
+function monthReducer(state: typeof initialState, action: { type: Action; value: string }) {
   switch (action.type) {
     case Action.CHANGE_NEXT: {
       const nextMonth = dayjs(state.displayMonth).add(+1, "month");
@@ -38,6 +39,14 @@ function monthReducer(state: typeof initialState, action: { type: Action }) {
       const dateCount = Number(previousMonth.endOf("month").format("D"));
       return {
         displayMonth: previousMonth.format("YYYY-MM"),
+        dates: [...Array(dateCount)].map((_, i) => i + 1),
+      };
+    }
+    case Action.CHANGE_VALUE: {
+      const inputMonth = dayjs(action.value);
+      const dateCount = Number(inputMonth.endOf("month").format("D"));
+      return {
+        displayMonth: inputMonth.format("YYYY-MM"),
         dates: [...Array(dateCount)].map((_, i) => i + 1),
       };
     }

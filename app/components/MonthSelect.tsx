@@ -11,13 +11,18 @@ export default function MonthSelect() {
 
   return (
     <div>
-      <a href="#" className="font-bold m-2" onClick={() => dispatch({ type: Action.CHANGE_PREVIOUS })}>
+      <button className="font-bold m-2" onClick={() => dispatch({ type: Action.CHANGE_PREVIOUS, value: "" })}>
         ＜
-      </a>
-      <input type="month" className="text-2xl rounded-md px-2 shadow-sm border" defaultValue={month.displayMonth} />
-      <a href="#" className="font-bold m-2" onClick={() => dispatch({ type: Action.CHANGE_NEXT })}>
+      </button>
+      <input
+        type="month"
+        className="text-2xl rounded-md px-2 shadow-sm border"
+        value={month.displayMonth}
+        onChange={(e) => dispatch({ type: Action.CHANGE_VALUE, value: e.target.value })}
+      />
+      <button className="font-bold m-2" onClick={() => dispatch({ type: Action.CHANGE_NEXT, value: "" })}>
         ＞
-      </a>
+      </button>
     </div>
   );
 }
