@@ -1,10 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import japaneseHolidays from "japanese-holidays";
 import dayjs from "dayjs";
 import { MonthContext } from "../modules/MonthContext";
 
 export default function Calendar() {
-  const [siteCount, setSiteCount] = useState(3);
   const month = useContext(MonthContext);
 
   const dateColor = (date: number) => {
@@ -22,11 +21,22 @@ export default function Calendar() {
     return `${date} (${dayCharacters[target.day()]})`;
   };
 
+  const plans = [
+    { id: 1, title: "予定１" },
+    { id: 2, title: "予定２" },
+    { id: 3, title: "予定３" },
+  ];
+
   return (
     <div>
       {month?.dates.map((date) => (
-        <div key={date} className="flex date-row">
+        <div key={date} className="flex h-12">
           <div className={`border w-16 text-center ${dateColor(date)}`}>{dateWithDayChar(date)}</div>
+          {plans.map((plan) => (
+            <div key={plan.id} className="border">
+              {plan.title}
+            </div>
+          ))}
         </div>
       ))}
     </div>
