@@ -12,7 +12,7 @@ export default function Home() {
           <MonthSelect />
         </header>
         <main>
-          <div className="grid grid-cols-1 md:grid-cols-2 mt-4 calendar-warp">
+          <div className="mt-4">
             <Calendar />
           </div>
           {/* <PlanForm /> */}

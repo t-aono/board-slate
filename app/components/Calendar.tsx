@@ -1,10 +1,13 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import japaneseHolidays from "japanese-holidays";
 import dayjs from "dayjs";
 import { MonthContext } from "../modules/MonthContext";
+import Modal from "./Modal";
 
 export default function Calendar() {
   const month = useContext(MonthContext);
+  const [open, setOpen] = useState(false);
+  const [clickedPlan, setClickedPlan] = useState(null);
 
   const dateColor = (date: number) => {
     const target = dayjs(month?.displayMonth).set("date", date);
@@ -22,19 +25,33 @@ export default function Calendar() {
   };
 
   const plans = [
-    { id: 1, title: "予定１" },
-    { id: 2, title: "予定２" },
-    { id: 3, title: "予定３" },
+    { id: 1, title: "予定A", content: "AAAAA1", date: 2 },
+    { id: 1, title: "予定B", content: "AAAAA2", date: 2 },
+    { id: 1, title: "予定C", content: "AAAAA3", date: 2 },
+    { id: 2, title: "予定TT", content: "AAAAA4", date: 3 },
+    { id: 3, title: "予定YY", content: "AAAAA5", date: 4 },
   ];
+
+  const columnCount = 3;
+
+  function handleClickPlan(plan: any) {
+    setClickedPlan(plan);
+    setOpen(true);
+  }
 
   return (
     <div>
+      <Modal open={open} setOpen={setOpen} plan={clickedPlan} />
       {month?.dates.map((date) => (
-        <div key={date} className="flex h-12">
-          <div className={`border w-16 text-center ${dateColor(date)}`}>{dateWithDayChar(date)}</div>
-          {plans.map((plan) => (
-            <div key={plan.id} className="border">
-              {plan.title}
+        <div key={date} className="grid grid-cols-[70px,1fr,1fr,1fr] h-12">
+          <div className={`border flex items-center justify-center ${dateColor(date)}`}>{dateWithDayChar(date)}</div>
+          {[...Array(columnCount)].map((_, index) => (
+            <div
+              key={index}
+              className="border flex items-center justify-center cursor-pointer"
+              onClick={() => handleClickPlan(plans.filter((plan) => plan.date === date)[index])}
+            >
+              {plans.filter((plan) => plan.date === date)[index]?.title}
             </div>
           ))}
         </div>
