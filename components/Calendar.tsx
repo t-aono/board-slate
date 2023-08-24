@@ -1,13 +1,22 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import japaneseHolidays from "japanese-holidays";
 import dayjs from "dayjs";
 import { MonthContext } from "../modules/MonthContext";
 import Modal from "./Modal";
+import axios from "axios";
+
+interface IPlan {
+  id: string;
+  title: string;
+  content: string;
+  date: string;
+}
 
 export default function Calendar() {
   const month = useContext(MonthContext);
   const [open, setOpen] = useState(false);
-  const [clickedPlan, setClickedPlan] = useState(null);
+  const [clickedPlan, setClickedPlan] = useState<IPlan | null>(null);
+  const [plans, setPlans] = useState<IPlan[]>([]);
 
   const dateColor = (date: number) => {
     const target = dayjs(month?.displayMonth).set("date", date);
@@ -18,38 +27,36 @@ export default function Calendar() {
     return "";
   };
 
-  const dateWithDayChar = (date: number) => {
-    const target = dayjs(month?.displayMonth).set("date", date);
-    const dayCharacters = ["日", "月", "火", "水", "木", "金", "土"];
-    return `${date} (${dayCharacters[target.day()]})`;
-  };
-
-  const plans = [
-    { id: 1, title: "予定A", content: "AAAAA1", date: 2 },
-    { id: 2, title: "予定B", content: "AAAAA2", date: 2 },
-    { id: 3, title: "予定C", content: "AAAAA3", date: 2 },
-    { id: 4, title: "予定TT", content: "AAAAA4", date: 3 },
-    { id: 5, title: "予定YY", content: "AAAAA5", date: 4 },
-  ];
-
   const teams = [
     { id: 1, name: "Aチーム" },
     { id: 2, name: "Bチーム" },
     { id: 3, name: "Cチーム" },
   ];
 
-  function handleClickPlan(plan: any) {
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get("/api/plan");
+      console.log("axios get plan", data);
+      setPlans(data);
+    })();
+  }, []);
+
+  function getDateWithDayChar(date: number) {
+    const target = dayjs(month?.displayMonth).set("date", date);
+    const dayCharacters = ["日", "月", "火", "水", "木", "金", "土"];
+    return `${date} (${dayCharacters[target.day()]})`;
+  }
+
+  function handleClickPlan(plan: IPlan) {
     setClickedPlan(plan);
     setOpen(true);
   }
 
   function PlanCell({ date, index }: { date: number; index: number }) {
+    const planOfDate = plans.filter((plan) => Number(plan.date.split("-")[2]) === date);
     return (
-      <div
-        className="border flex items-center justify-center cursor-pointer"
-        onClick={() => handleClickPlan(plans.filter((plan) => plan.date === date)[index])}
-      >
-        {plans.filter((plan) => plan.date === date)[index]?.title}
+      <div className="border flex items-center justify-center cursor-pointer" onClick={() => handleClickPlan(planOfDate[index])}>
+        {planOfDate[index]?.title}
       </div>
     );
   }
@@ -60,7 +67,7 @@ export default function Calendar() {
 
   function CalendarRow({ date }: { date?: number }) {
     const leftColumnColor = date ? dateColor(date) : "";
-    const leftColumnText = date ? dateWithDayChar(date) : "";
+    const leftColumnText = date ? getDateWithDayChar(date) : "";
     const headerColor = date ? "" : "bg-gray-100";
     return (
       <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-12 ${headerColor}`}>

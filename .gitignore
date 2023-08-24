@@ -33,3 +33,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# firebase private key
+board-slate-firebase-adminsdk-p15gz-350b19a43a.json

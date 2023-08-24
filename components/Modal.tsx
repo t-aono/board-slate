@@ -3,9 +3,16 @@
 import { Dispatch, Fragment, SetStateAction, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CalendarIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
 
 export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>; plan: any }) {
   const cancelButtonRef = useRef(null);
+
+  async function handleUpdate() {
+    const data = { title: "予定B", content: "AAAAA1", date: "2023-08-24" };
+    await axios.post("/api/plan", data);
+    setOpen(false);
+  }
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -53,7 +60,7 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                    onClick={() => setOpen(false)}
+                    onClick={() => handleUpdate()}
                   >
                     更新
                   </button>
