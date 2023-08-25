@@ -12,12 +12,17 @@ if (admin.apps.length === 0) {
 const db = getFirestore();
 
 const COLLECTION_NAME = "plans";
-const docRef = db.collection(COLLECTION_NAME).doc();
 
 export async function POST(request: NextRequest) {
   const insertData = await request.json();
-  docRef.set(insertData);
+  db.collection(COLLECTION_NAME).doc().set(insertData);
   return NextResponse.json(insertData);
+}
+
+export async function PATCH(request: NextRequest) {
+  const updateData = await request.json();
+  db.collection(COLLECTION_NAME).doc(updateData.id).update(updateData);
+  return NextResponse.json(updateData);
 }
 
 export async function GET(request: NextRequest) {

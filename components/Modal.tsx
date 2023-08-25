@@ -18,10 +18,17 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
 
   const displayDate = plan ? dayjs(plan.date).format("YYYY/MM/DD") : "";
 
-  async function handleUpdate() {
-    await axios.post("/api/plan", formValue);
-    if (dispatch) {
-      dispatch({ type: Action.ADD, value: formValue });
+  async function handSave() {
+    if (plan.id) {
+      await axios.patch("/api/plan", formValue);
+      if (dispatch) {
+        dispatch({ type: Action.UPDATE, value: formValue });
+      }
+    } else {
+      await axios.post("/api/plan", formValue);
+      if (dispatch) {
+        dispatch({ type: Action.ADD, value: formValue });
+      }
     }
     setOpen(false);
   }
@@ -77,9 +84,9 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                    onClick={() => handleUpdate()}
+                    onClick={() => handSave()}
                   >
-                    更新
+                    {plan.id ? "更新" : "登録"}
                   </button>
                   <button
                     type="button"

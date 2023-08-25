@@ -17,6 +17,7 @@ export const initialState: { items: IPlan[] } = {
 export enum Action {
   SET = "set",
   ADD = "add",
+  UPDATE = "update",
 }
 
 export function PlanProvider({ children }: { children: ReactNode }) {
@@ -35,6 +36,14 @@ function planReducer(state: typeof initialState, action: { type: Action; values?
     }
     case Action.ADD: {
       return { items: action.value ? [...state.items, action.value] : state.items };
+    }
+    case Action.UPDATE: {
+      const items = [...state.items];
+      if (action.value) {
+        const updateIndex = state.items.findIndex((item) => item.id === action.value?.id);
+        items.splice(updateIndex, 1, action.value);
+      }
+      return { items };
     }
   }
 }
