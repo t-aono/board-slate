@@ -4,19 +4,19 @@ import dayjs from "dayjs";
 import { MonthContext } from "../modules/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
-
-interface IPlan {
-  id: string;
-  title: string;
-  content: string;
-  date: string;
-}
+import { Action, IPlan, PlanContext, PlanDispatchContext } from "@/modules/PlanContext";
 
 export default function Calendar() {
   const month = useContext(MonthContext);
+  const plan = useContext(PlanContext);
+  const dispatch = useContext(PlanDispatchContext);
   const [open, setOpen] = useState(false);
-  const [clickedPlan, setClickedPlan] = useState<IPlan | null>(null);
-  const [plans, setPlans] = useState<IPlan[]>([]);
+  const [clickedPlan, setClickedPlan] = useState<IPlan>({
+    id: "",
+    title: "",
+    content: "",
+    date: "",
+  });
 
   const dateColor = (date: number) => {
     const target = dayjs(month?.displayMonth).set("date", date);
@@ -36,10 +36,12 @@ export default function Calendar() {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get("/api/plan");
-      console.log("axios get plan", data);
-      setPlans(data);
+      console.log("#get plans", data);
+      if (dispatch) {
+        dispatch({ type: Action.SET, values: data });
+      }
     })();
-  }, []);
+  }, [dispatch]);
 
   function getDateWithDayChar(date: number) {
     const target = dayjs(month?.displayMonth).set("date", date);
@@ -47,18 +49,20 @@ export default function Calendar() {
     return `${date} (${dayCharacters[target.day()]})`;
   }
 
-  function handleClickPlan(plan: IPlan) {
-    setClickedPlan(plan);
+  function handleClickCell(plan: IPlan, date: number) {
+    setClickedPlan({ ...plan, date: dayjs(month?.displayMonth).set("date", date).format("YYYY-MM-DD") });
     setOpen(true);
   }
 
   function PlanCell({ date, index }: { date: number; index: number }) {
-    const planOfDate = plans.filter((plan) => Number(plan.date.split("-")[2]) === date);
-    return (
-      <div className="border flex items-center justify-center cursor-pointer" onClick={() => handleClickPlan(planOfDate[index])}>
-        {planOfDate[index]?.title}
-      </div>
-    );
+    const planOfDate = plan?.items.filter((plan) => Number(plan.date.split("-")[2]) === date);
+    if (planOfDate) {
+      return (
+        <div className="border flex items-center justify-center cursor-pointer" onClick={() => handleClickCell(planOfDate[index], date)}>
+          {planOfDate[index]?.title}
+        </div>
+      );
+    }
   }
 
   function TeamCell({ team }: { team: { id: number; name: string } }) {
