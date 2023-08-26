@@ -6,17 +6,20 @@ import { CalendarIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import dayjs from "dayjs";
 import { Action, IPlan, PlanDispatchContext } from "@/modules/PlanContext";
+import { TeamsContext } from "@/modules/TeamsContext";
 
 export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>; plan: IPlan }) {
   const titleInputRef = useRef(null);
   const [formValue, setFormValue] = useState<IPlan>(plan);
   const dispatch = useContext(PlanDispatchContext);
+  const teams = useContext(TeamsContext);
 
   useEffect(() => {
     setFormValue(plan);
   }, [plan]);
 
   const displayDate = plan ? dayjs(plan.date).format("YYYY/MM/DD") : "";
+  const teamName = plan ? teams?.find((team) => team.id === plan.teamId)?.name : "";
 
   async function handSave() {
     if (plan.id) {
@@ -71,6 +74,9 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
                       </Dialog.Title>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">{displayDate}</p>
+                      </div>
+                      <div className="mt-2">
+                        <p className="text-sm text-gray-500">{teamName}</p>
                       </div>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">

@@ -8,6 +8,7 @@ export interface IPlan {
   title: string;
   content: string;
   date: string;
+  teamId: number;
 }
 
 export const initialState: { items: IPlan[] } = {

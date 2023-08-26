@@ -5,10 +5,12 @@ import { MonthContext } from "../modules/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
 import { Action, IPlan, PlanContext, PlanDispatchContext } from "@/modules/PlanContext";
+import { TeamsContext } from "@/modules/TeamsContext";
 
 export default function Calendar() {
   const month = useContext(MonthContext);
   const plan = useContext(PlanContext);
+  const teams = useContext(TeamsContext);
   const dispatch = useContext(PlanDispatchContext);
   const [open, setOpen] = useState(false);
   const [clickedPlan, setClickedPlan] = useState<IPlan>({
@@ -16,6 +18,7 @@ export default function Calendar() {
     title: "",
     content: "",
     date: "",
+    teamId: 0,
   });
 
   const dateColor = (date: number) => {
@@ -26,12 +29,6 @@ export default function Calendar() {
     if (day === 6) return "bg-blue-50";
     return "";
   };
-
-  const teams = [
-    { id: 1, name: "Aチーム" },
-    { id: 2, name: "Bチーム" },
-    { id: 3, name: "Cチーム" },
-  ];
 
   useEffect(() => {
     (async () => {
@@ -49,20 +46,23 @@ export default function Calendar() {
     return `${date} (${dayCharacters[target.day()]})`;
   }
 
-  function handleClickCell(plan: IPlan, date: number) {
-    setClickedPlan({ ...plan, date: dayjs(month?.displayMonth).set("date", date).format("YYYY-MM-DD") });
+  function handleClickCell(plan: IPlan | undefined, date: number, teamId: number) {
+    const dateString = dayjs(month?.displayMonth).set("date", date).format("YYYY-MM-DD");
+    if (plan !== undefined) {
+      setClickedPlan({ ...plan, date: dateString, teamId });
+    } else {
+      setClickedPlan({ ...clickedPlan, date: dateString, teamId });
+    }
     setOpen(true);
   }
 
-  function PlanCell({ date, index }: { date: number; index: number }) {
-    const planOfDate = plan?.items.filter((plan) => Number(plan.date.split("-")[2]) === date);
-    if (planOfDate) {
-      return (
-        <div className="border flex items-center justify-center cursor-pointer" onClick={() => handleClickCell(planOfDate[index], date)}>
-          {planOfDate[index]?.title}
-        </div>
-      );
-    }
+  function PlanCell({ date, teamId }: { date: number; teamId: number }) {
+    const planData = plan?.items.find((plan) => Number(plan.date.split("-")[2]) === date && plan.teamId === teamId);
+    return (
+      <div className="border flex items-center justify-center cursor-pointer" onClick={() => handleClickCell(planData, date, teamId)}>
+        {planData?.title}
+      </div>
+    );
   }
 
   function TeamCell({ team }: { team: { id: number; name: string } }) {
@@ -76,9 +76,7 @@ export default function Calendar() {
     return (
       <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-12 ${headerColor}`}>
         <div className={`border flex items-center justify-center ${leftColumnColor}`}>{leftColumnText}</div>
-        {date
-          ? [...Array(teams.length)].map((_, index) => <PlanCell key={index} date={date} index={index} />)
-          : teams.map((team) => <TeamCell team={team} key={team.id} />)}
+        {date ? teams?.map((team) => <PlanCell key={team.id} date={date} teamId={team.id} />) : teams?.map((team) => <TeamCell team={team} key={team.id} />)}
       </div>
     );
   }
