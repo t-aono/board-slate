@@ -15,8 +15,8 @@ const COLLECTION_NAME = "plans";
 
 export async function POST(request: NextRequest) {
   const insertData = await request.json();
-  db.collection(COLLECTION_NAME).doc().set(insertData);
-  return NextResponse.json(insertData);
+  const docRef = await db.collection(COLLECTION_NAME).add(insertData);
+  return NextResponse.json({ ...insertData, id: docRef.id });
 }
 
 export async function PATCH(request: NextRequest) {
@@ -27,9 +27,6 @@ export async function PATCH(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   const snapshot: QuerySnapshot = await db.collection(COLLECTION_NAME).get();
-  const data = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  const data = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({ ...doc.data(), id: doc.id }));
   return NextResponse.json(data);
 }

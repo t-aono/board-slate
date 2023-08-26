@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { MonthContext } from "../modules/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
-import { Action, IPlan, PlanContext, PlanDispatchContext } from "@/modules/PlanContext";
+import { Action, IPlan, PlanContext, PlanDispatchContext, initialPlan } from "@/modules/PlanContext";
 import { TeamsContext } from "@/modules/TeamsContext";
 
 export default function Calendar() {
@@ -13,13 +13,7 @@ export default function Calendar() {
   const teams = useContext(TeamsContext);
   const dispatch = useContext(PlanDispatchContext);
   const [open, setOpen] = useState(false);
-  const [clickedPlan, setClickedPlan] = useState<IPlan>({
-    id: "",
-    title: "",
-    content: "",
-    date: "",
-    teamId: 0,
-  });
+  const [clickedPlan, setPlan] = useState<IPlan>(initialPlan);
 
   const dateColor = (date: number) => {
     const target = dayjs(month?.displayMonth).set("date", date);
@@ -49,9 +43,9 @@ export default function Calendar() {
   function handleClickCell(plan: IPlan | undefined, date: number, teamId: number) {
     const dateString = dayjs(month?.displayMonth).set("date", date).format("YYYY-MM-DD");
     if (plan !== undefined) {
-      setClickedPlan({ ...plan, date: dateString, teamId });
+      setPlan({ ...plan, date: dateString, teamId });
     } else {
-      setClickedPlan({ ...clickedPlan, date: dateString, teamId });
+      setPlan({ ...clickedPlan, date: dateString, teamId });
     }
     setOpen(true);
   }
@@ -87,7 +81,7 @@ export default function Calendar() {
       {month?.dates.map((date) => (
         <CalendarRow key={date} date={date} />
       ))}
-      <Modal open={open} setOpen={setOpen} plan={clickedPlan} />
+      <Modal open={open} setOpen={setOpen} plan={clickedPlan} setPlan={setPlan} />
     </div>
   );
 }

@@ -5,35 +5,51 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CalendarIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Action, IPlan, PlanDispatchContext } from "@/modules/PlanContext";
+import { Action, IPlan, PlanDispatchContext, initialPlan } from "@/modules/PlanContext";
 import { TeamsContext } from "@/modules/TeamsContext";
 
-export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>; plan: IPlan }) {
+export default function Modal({
+  open,
+  setOpen,
+  plan,
+  setPlan,
+}: {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  plan: IPlan;
+  setPlan: Dispatch<SetStateAction<IPlan>>;
+}) {
   const titleInputRef = useRef(null);
-  const [formValue, setFormValue] = useState<IPlan>(plan);
   const dispatch = useContext(PlanDispatchContext);
   const teams = useContext(TeamsContext);
-
-  useEffect(() => {
-    setFormValue(plan);
-  }, [plan]);
-
+  const [formValue, setFormValue] = useState<IPlan>(initialPlan);
   const displayDate = plan ? dayjs(plan.date).format("YYYY/MM/DD") : "";
   const teamName = plan ? teams?.find((team) => team.id === plan.teamId)?.name : "";
 
-  async function handSave() {
+  useEffect(() => {
+    if (plan) {
+      setFormValue(plan);
+    }
+  }, [plan]);
+
+  async function handleSave() {
     if (plan.id) {
       await axios.patch("/api/plan", formValue);
       if (dispatch) {
         dispatch({ type: Action.UPDATE, value: formValue });
       }
     } else {
-      await axios.post("/api/plan", formValue);
+      const { data } = await axios.post("/api/plan", formValue);
       if (dispatch) {
-        dispatch({ type: Action.ADD, value: formValue });
+        dispatch({ type: Action.ADD, value: data });
       }
     }
     setOpen(false);
+  }
+
+  function handleCancel() {
+    setOpen(false);
+    setTimeout(() => setPlan(initialPlan), 500);
   }
 
   return (
@@ -90,14 +106,14 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                    onClick={() => handSave()}
+                    onClick={() => handleSave()}
                   >
                     {plan.id ? "更新" : "登録"}
                   </button>
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => setOpen(false)}
+                    onClick={() => handleCancel()}
                   >
                     キャンセル
                   </button>

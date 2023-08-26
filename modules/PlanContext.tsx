@@ -11,6 +11,14 @@ export interface IPlan {
   teamId: number;
 }
 
+export const initialPlan = {
+  id: "",
+  title: "",
+  content: "",
+  date: "",
+  teamId: 0,
+};
+
 export const initialState: { items: IPlan[] } = {
   items: [],
 };
