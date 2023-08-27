@@ -85,19 +85,32 @@ export default function Modal({
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 sm:mx-0 sm:h-10 sm:w-10">
                       <CalendarIcon className="h-6 w-6" aria-hidden="true" />
                     </div>
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-4/5">
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                        <input defaultValue={formValue.title} onChange={(e) => setFormValue({ ...formValue, title: e.target.value })} ref={titleInputRef} />
+                        <label className="block text-sm text-gray-500 font-bold mb-2">タイトル</label>
+                        <input
+                          defaultValue={formValue.title}
+                          onChange={(e) => setFormValue({ ...formValue, title: e.target.value })}
+                          ref={titleInputRef}
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
+                        />
                       </Dialog.Title>
-                      <div className="mt-2">
+                      <div className="mt-4">
+                        <label className="block text-sm text-gray-500 font-bold mb-2">日付</label>
                         <p className="text-sm text-gray-500">{displayDate}</p>
                       </div>
-                      <div className="mt-2">
+                      <div className="mt-4">
+                        <label className="block text-sm text-gray-500 font-bold mb-2">チーム名</label>
                         <p className="text-sm text-gray-500">{teamName}</p>
                       </div>
-                      <div className="mt-2">
+                      <div className="mt-4">
                         <p className="text-sm text-gray-500">
-                          <textarea defaultValue={formValue.content} onChange={(e) => setFormValue({ ...formValue, content: e.target.value })} />
+                          <label className="block text-sm text-gray-500 font-bold mb-2">詳細</label>
+                          <textarea
+                            defaultValue={formValue.content}
+                            onChange={(e) => setFormValue({ ...formValue, content: e.target.value })}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
+                          />
                         </p>
                       </div>
                     </div>
