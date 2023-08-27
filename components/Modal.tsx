@@ -5,7 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CalendarIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Action, IPlan, PlanDispatchContext, initialPlan } from "@/modules/PlanContext";
+import { Action, IPlan, PlansDispatchContext, initialPlan } from "@/modules/PlansContext";
 import { TeamsContext } from "@/modules/TeamsContext";
 
 export default function Modal({
@@ -20,7 +20,7 @@ export default function Modal({
   setPlan: Dispatch<SetStateAction<IPlan>>;
 }) {
   const titleInputRef = useRef(null);
-  const dispatch = useContext(PlanDispatchContext);
+  const dispatch = useContext(PlansDispatchContext);
   const teams = useContext(TeamsContext);
   const [formValue, setFormValue] = useState<IPlan>(initialPlan);
   const displayDate = plan ? dayjs(plan.date).format("YYYY/MM/DD") : "";
@@ -45,6 +45,7 @@ export default function Modal({
       }
     }
     setOpen(false);
+    setTimeout(() => setPlan(initialPlan), 500);
   }
 
   function handleCancel() {

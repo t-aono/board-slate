@@ -4,14 +4,14 @@ import dayjs from "dayjs";
 import { MonthContext } from "../modules/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
-import { Action, IPlan, PlanContext, PlanDispatchContext, initialPlan } from "@/modules/PlanContext";
+import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "@/modules/PlansContext";
 import { TeamsContext } from "@/modules/TeamsContext";
 
 export default function Calendar() {
   const month = useContext(MonthContext);
-  const plan = useContext(PlanContext);
+  const plans = useContext(PlansContext);
+  const dispatch = useContext(PlansDispatchContext);
   const teams = useContext(TeamsContext);
-  const dispatch = useContext(PlanDispatchContext);
   const [open, setOpen] = useState(false);
   const [clickedPlan, setPlan] = useState<IPlan>(initialPlan);
 
@@ -51,7 +51,7 @@ export default function Calendar() {
   }
 
   function PlanCell({ date, teamId }: { date: number; teamId: number }) {
-    const planData = plan?.items.find((plan) => Number(plan.date.split("-")[2]) === date && plan.teamId === teamId);
+    const planData = plans?.find((plan) => Number(plan.date.split("-")[2]) === date && plan.teamId === teamId);
     return (
       <div className="border flex items-center justify-center cursor-pointer" onClick={() => handleClickCell(planData, date, teamId)}>
         {planData?.title}

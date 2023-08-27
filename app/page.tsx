@@ -1,6 +1,6 @@
 "use client";
 
-import { PlanProvider } from "@/modules/PlanContext";
+import { PlansProvider } from "@/modules/PlansContext";
 import Calendar from "../components/Calendar";
 import MonthSelect from "../components/MonthSelect";
 import { MonthProvider } from "../modules/MonthContext";
@@ -9,7 +9,7 @@ import { TeamsProvider } from "@/modules/TeamsContext";
 export default function Home() {
   return (
     <MonthProvider>
-      <PlanProvider>
+      <PlansProvider>
         <TeamsProvider>
           <div>
             <header className="h-10">
@@ -25,7 +25,7 @@ export default function Home() {
             </main>
           </div>
         </TeamsProvider>
-      </PlanProvider>
+      </PlansProvider>
     </MonthProvider>
   );
 }
