@@ -1,3 +1,11 @@
+import Header from "@/components/layouts/Header";
+import Content from "@/components/layouts/Content";
+
 export default function Setting() {
-  return <div>setting page</div>;
+  return (
+    <>
+      <Header />
+      <Content>setting page</Content>
+    </>
+  );
 }

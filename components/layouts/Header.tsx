@@ -1,7 +1,25 @@
+import { AdjustmentsHorizontalIcon, TableCellsIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import BaseIcon from "../elements/BaseIcon";
+
 export default function Header() {
   return (
-    <header className="h-10">
-      <h1 className="bg-gray-200 py-2 px-8">Board Slate</h1>
+    <header className="bg-gray-200 h-10">
+      <div className="container mx-auto flex justify-between items-center">
+        <h1 className="py-2 px-4">Board Slate</h1>
+        <div className="py-2 px-4 flex gap-8">
+          <Link href="/">
+            <BaseIcon>
+              <TableCellsIcon />
+            </BaseIcon>
+          </Link>
+          <Link href="/setting">
+            <BaseIcon>
+              <AdjustmentsHorizontalIcon />
+            </BaseIcon>
+          </Link>
+        </div>
+      </div>
     </header>
   );
 }

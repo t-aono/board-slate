@@ -2,11 +2,12 @@
 
 import { Dispatch, Fragment, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CalendarIcon } from "@heroicons/react/24/outline";
+import { CalendarIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import dayjs from "dayjs";
 import { Action, IPlan, PlansDispatchContext, initialPlan } from "../contexts/PlansContext";
 import { TeamsContext } from "../contexts/TeamsContext";
+import BaseIcon from "@/components/elements/BaseIcon";
 
 export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>; plan: IPlan }) {
   const titleInputRef = useRef(null);
@@ -67,7 +68,9 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <CalendarIcon className="h-6 w-6" aria-hidden="true" />
+                      <BaseIcon>
+                        <CheckCircleIcon />
+                      </BaseIcon>
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-4/5">
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">

@@ -70,7 +70,7 @@ export default function Calendar() {
 
   function CalendarHeader() {
     return (
-      <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-12 bg-gray-100`}>
+      <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-10 bg-gray-100`}>
         <div className={`border flex items-center justify-center`}></div>
         {teams?.map((team) => (
           <TeamCell team={team} key={team.id} />
