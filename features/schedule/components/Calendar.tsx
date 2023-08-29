@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import japaneseHolidays from "japanese-holidays";
 import dayjs from "dayjs";
-import { MonthContext } from "../modules/MonthContext";
+import { MonthContext } from "../contexts/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
-import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "@/modules/PlansContext";
-import { TeamsContext } from "@/modules/TeamsContext";
+import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "../contexts/PlansContext";
+import { TeamsContext } from "../contexts/TeamsContext";
 
 export default function Calendar() {
   const month = useContext(MonthContext);
@@ -28,12 +28,13 @@ export default function Calendar() {
   function getDateClasses(date: number) {
     const target = dayjs(month?.displayMonth).set("date", date);
     const day = target.day();
-    const isToday = dayjs().date() === target.date();
+    const isToday = dayjs().isSame(target, "year") && dayjs().isSame(target, "month") && dayjs().isSame(target, "day");
+    console.log({ isToday });
     const isHoliday = japaneseHolidays.isHoliday(target.toDate()) ? true : false;
     let classes = "";
     if (day === 0 || isHoliday) classes += "bg-red-50 ";
     if (day === 6) classes += "bg-blue-50 ";
-    if (isToday) classes += "border-blue-500 ";
+    if (isToday) classes += "font-bold ";
     return classes;
   }
 

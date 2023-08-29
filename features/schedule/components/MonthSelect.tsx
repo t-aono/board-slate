@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Action, MonthContext, MonthDispatchContext } from "../modules/MonthContext";
+import { Action, MonthContext, MonthDispatchContext } from "../contexts/MonthContext";
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
 
 export default function MonthSelect() {

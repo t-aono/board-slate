@@ -5,8 +5,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CalendarIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Action, IPlan, PlansDispatchContext, initialPlan } from "@/modules/PlansContext";
-import { TeamsContext } from "@/modules/TeamsContext";
+import { Action, IPlan, PlansDispatchContext, initialPlan } from "../contexts/PlansContext";
+import { TeamsContext } from "../contexts/TeamsContext";
 
 export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>; plan: IPlan }) {
   const titleInputRef = useRef(null);
