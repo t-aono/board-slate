@@ -15,15 +15,6 @@ export default function Calendar() {
   const [open, setOpen] = useState(false);
   const [clickedPlan, setPlan] = useState<IPlan>(initialPlan);
 
-  const dateColor = (date: number) => {
-    const target = dayjs(month?.displayMonth).set("date", date);
-    const day = target.day();
-    const isHoliday = japaneseHolidays.isHoliday(target.toDate()) ? true : false;
-    if (day === 0 || isHoliday) return "bg-red-50";
-    if (day === 6) return "bg-blue-50";
-    return "";
-  };
-
   useEffect(() => {
     (async () => {
       const { data } = await axios.get("/api/plan");
@@ -33,6 +24,18 @@ export default function Calendar() {
       }
     })();
   }, [dispatch]);
+
+  function getDateClasses(date: number) {
+    const target = dayjs(month?.displayMonth).set("date", date);
+    const day = target.day();
+    const isToday = dayjs().date() === target.date();
+    const isHoliday = japaneseHolidays.isHoliday(target.toDate()) ? true : false;
+    let classes = "";
+    if (day === 0 || isHoliday) classes += "bg-red-50 ";
+    if (day === 6) classes += "bg-blue-50 ";
+    if (isToday) classes += "border-blue-500 ";
+    return classes;
+  }
 
   function getDateWithDayChar(date: number) {
     const target = dayjs(month?.displayMonth).set("date", date);
@@ -45,43 +48,62 @@ export default function Calendar() {
     if (plan !== undefined) {
       setPlan({ ...plan, date: dateString, teamId });
     } else {
-      setPlan({ ...clickedPlan, date: dateString, teamId });
+      setPlan({ ...initialPlan, date: dateString, teamId });
     }
     setOpen(true);
-  }
-
-  function PlanCell({ date, teamId }: { date: number; teamId: number }) {
-    const planData = plans?.find((plan) => Number(plan.date.split("-")[2]) === date && plan.teamId === teamId);
-    return (
-      <div className="border flex items-center justify-center cursor-pointer" onClick={() => handleClickCell(planData, date, teamId)}>
-        {planData?.title}
-      </div>
-    );
   }
 
   function TeamCell({ team }: { team: { id: number; name: string } }) {
     return <div className="border flex items-center justify-center">{team.name}</div>;
   }
 
-  function CalendarRow({ date }: { date?: number }) {
-    const leftColumnColor = date ? dateColor(date) : "";
-    const leftColumnText = date ? getDateWithDayChar(date) : "";
-    const headerColor = date ? "" : "bg-gray-100";
+  function PlanCell({ date, teamId }: { date: number; teamId: number }) {
+    const planData = plans?.find((plan) => Number(plan.date.split("-")[2]) === date && plan.teamId === teamId);
     return (
-      <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-12 ${headerColor}`}>
-        <div className={`border flex items-center justify-center ${leftColumnColor}`}>{leftColumnText}</div>
-        {date ? teams?.map((team) => <PlanCell key={team.id} date={date} teamId={team.id} />) : teams?.map((team) => <TeamCell team={team} key={team.id} />)}
+      <div className="border text-center cursor-pointer" onClick={() => handleClickCell(planData, date, teamId)}>
+        <div>{planData?.title}</div>
+        <div className="text-xs">{planData?.content}</div>
+      </div>
+    );
+  }
+
+  function CalendarHeader() {
+    return (
+      <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-12 bg-gray-100`}>
+        <div className={`border flex items-center justify-center`}></div>
+        {teams?.map((team) => (
+          <TeamCell team={team} key={team.id} />
+        ))}
+      </div>
+    );
+  }
+
+  function CalendarRow({ date }: { date: number }) {
+    return (
+      <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-12`}>
+        <div className={`border flex items-center justify-center ${getDateClasses(date)}`}>{getDateWithDayChar(date)}</div>
+        {teams?.map((team) => (
+          <PlanCell key={team.id} date={date} teamId={team.id} />
+        ))}
       </div>
     );
   }
 
   return (
-    <div>
-      <CalendarRow />
-      {month?.dates.map((date) => (
-        <CalendarRow key={date} date={date} />
-      ))}
-      <Modal open={open} setOpen={setOpen} plan={clickedPlan} setPlan={setPlan} />
+    <div className="grid grid-cols-2 text-gray-600">
+      <div>
+        <CalendarHeader />
+        {month?.dates.slice(0, 15).map((date) => (
+          <CalendarRow key={date} date={date} />
+        ))}
+      </div>
+      <div>
+        <CalendarHeader />
+        {month?.dates.slice(15, 31).map((date) => (
+          <CalendarRow key={date} date={date} />
+        ))}
+      </div>
+      <Modal open={open} setOpen={setOpen} plan={clickedPlan} />
     </div>
   );
 }

@@ -11,7 +11,7 @@ export default function MonthSelect() {
   }
 
   return (
-    <div className="flex items-middle">
+    <div className="flex items-middle text-gray-600">
       <button className="font-bold m-2" onClick={() => dispatch({ type: Action.CHANGE_PREVIOUS, value: "" })}>
         <ChevronDoubleLeftIcon className="h-6 w-6" />
       </button>

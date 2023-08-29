@@ -8,17 +8,7 @@ import dayjs from "dayjs";
 import { Action, IPlan, PlansDispatchContext, initialPlan } from "@/modules/PlansContext";
 import { TeamsContext } from "@/modules/TeamsContext";
 
-export default function Modal({
-  open,
-  setOpen,
-  plan,
-  setPlan,
-}: {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  plan: IPlan;
-  setPlan: Dispatch<SetStateAction<IPlan>>;
-}) {
+export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>; plan: IPlan }) {
   const titleInputRef = useRef(null);
   const dispatch = useContext(PlansDispatchContext);
   const teams = useContext(TeamsContext);
@@ -45,12 +35,6 @@ export default function Modal({
       }
     }
     setOpen(false);
-    setTimeout(() => setPlan(initialPlan), 500);
-  }
-
-  function handleCancel() {
-    setOpen(false);
-    setTimeout(() => setPlan(initialPlan), 500);
   }
 
   return (
@@ -87,29 +71,29 @@ export default function Modal({
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-4/5">
                       <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                        <label className="block text-sm text-gray-500 font-bold mb-2">タイトル</label>
+                        <label className="block text-sm text-gray-600 font-bold mb-2">タイトル</label>
                         <input
                           defaultValue={formValue.title}
                           onChange={(e) => setFormValue({ ...formValue, title: e.target.value })}
                           ref={titleInputRef}
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
+                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                         />
                       </Dialog.Title>
                       <div className="mt-4">
-                        <label className="block text-sm text-gray-500 font-bold mb-2">日付</label>
-                        <p className="text-sm text-gray-500">{displayDate}</p>
+                        <label className="block text-sm text-gray-600 font-bold mb-2">日付</label>
+                        <p className="text-sm text-gray-600">{displayDate}</p>
                       </div>
                       <div className="mt-4">
-                        <label className="block text-sm text-gray-500 font-bold mb-2">チーム名</label>
-                        <p className="text-sm text-gray-500">{teamName}</p>
+                        <label className="block text-sm text-gray-600 font-bold mb-2">チーム名</label>
+                        <p className="text-sm text-gray-600">{teamName}</p>
                       </div>
                       <div className="mt-4">
-                        <p className="text-sm text-gray-500">
-                          <label className="block text-sm text-gray-500 font-bold mb-2">詳細</label>
+                        <p className="text-sm text-gray-600">
+                          <label className="block text-sm text-gray-600 font-bold mb-2">詳細</label>
                           <textarea
                             defaultValue={formValue.content}
                             onChange={(e) => setFormValue({ ...formValue, content: e.target.value })}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
                           />
                         </p>
                       </div>
@@ -127,7 +111,7 @@ export default function Modal({
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => handleCancel()}
+                    onClick={() => setOpen(false)}
                   >
                     キャンセル
                   </button>
