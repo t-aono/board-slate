@@ -1,11 +1,11 @@
 import Header from "@/components/layouts/Header";
-import Content from "@/components/layouts/Content";
+import MainContent from "@/components/layouts/MainContent";
 
 export default function Setting() {
   return (
     <>
       <Header />
-      <Content>setting page</Content>
+      <MainContent>setting page</MainContent>
     </>
   );
 }

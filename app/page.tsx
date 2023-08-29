@@ -1,16 +1,16 @@
 "use client";
 
 import Header from "@/components/layouts/Header";
-import Main from "@/components/layouts/Content";
+import MainContent from "@/components/layouts/MainContent";
 import PlanList from "@/features/schedule/components/PlanList";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <Main>
+      <MainContent>
         <PlanList />
-      </Main>
+      </MainContent>
     </>
   );
 }

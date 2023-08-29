@@ -29,7 +29,6 @@ export default function Calendar() {
     const target = dayjs(month?.displayMonth).set("date", date);
     const day = target.day();
     const isToday = dayjs().isSame(target, "year") && dayjs().isSame(target, "month") && dayjs().isSame(target, "day");
-    console.log({ isToday });
     const isHoliday = japaneseHolidays.isHoliday(target.toDate()) ? true : false;
     let classes = "";
     if (day === 0 || isHoliday) classes += "bg-red-50 ";
