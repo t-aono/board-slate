@@ -14,7 +14,6 @@ export default function Calendar() {
   const sections = useContext(SectionsContext);
   const [open, setOpen] = useState(false);
   const [clickedPlan, setPlan] = useState<IPlan>(initialPlan);
-  const gridCols = "grid-cols-[70px," + sections?.map(() => "1fr").join(",") + "]";
 
   useEffect(() => {
     (async () => {
@@ -69,8 +68,9 @@ export default function Calendar() {
   }
 
   function CalendarHeader() {
+    // const gridCols = "grid-cols-[70px," + sections?.map(() => "1fr").join(",") + "]";
     return (
-      <div className={`grid ${gridCols} h-10 bg-gray-100`}>
+      <div className={`grid grid-flow-col auto-cols-fr h-10 bg-gray-100`}>
         <div className={`border flex items-center justify-center`}></div>
         {sections?.map((team) => (
           <HeaderCell team={team} key={team.id} />
@@ -81,7 +81,7 @@ export default function Calendar() {
 
   function CalendarRow({ date }: { date: number }) {
     return (
-      <div className={`grid ${gridCols} h-12`}>
+      <div className={`grid grid-flow-col auto-cols-fr h-12`}>
         <div className={`border flex items-center justify-center ${getDateClasses(date)}`}>{getDateWithDayChar(date)}</div>
         {sections?.map((team) => (
           <PlanCell key={team.id} date={date} teamId={team.id} />
