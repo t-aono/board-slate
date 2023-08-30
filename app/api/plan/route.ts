@@ -26,7 +26,9 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const snapshot: QuerySnapshot = await db.collection(COLLECTION_NAME).get();
+  const { searchParams } = new URL(request.url);
+  const month = searchParams.get("month");
+  const snapshot: QuerySnapshot = await db.collection(COLLECTION_NAME).where("date", ">=", `${month}-01`).where("date", "<=", `${month}-31`).get();
   const data = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({ ...doc.data(), id: doc.id }));
   return NextResponse.json(data);
 }

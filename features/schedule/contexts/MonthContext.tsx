@@ -1,13 +1,13 @@
 import { Dispatch, ReactNode, createContext, useReducer } from "react";
 import dayjs from "dayjs";
 
-export const MonthContext = createContext<typeof initialState | null>(null);
-export const MonthDispatchContext = createContext<Dispatch<{ type: Action; value: string }> | null>(null);
-
 export const initialState = {
   displayMonth: dayjs().format("YYYY-MM"),
   dates: [...Array(Number(dayjs().endOf("month").format("D")))].map((_, i) => i + 1),
 };
+
+export const MonthContext = createContext(initialState);
+export const MonthDispatchContext = createContext<Dispatch<{ type: Action; value: string }> | null>(null);
 
 export enum Action {
   CHANGE_NEXT = "change_next",

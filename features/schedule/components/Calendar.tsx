@@ -8,7 +8,7 @@ import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "
 import { TeamsContext } from "../contexts/TeamsContext";
 
 export default function Calendar() {
-  const month = useContext(MonthContext);
+  const { displayMonth, dates } = useContext(MonthContext);
   const plans = useContext(PlansContext);
   const dispatch = useContext(PlansDispatchContext);
   const teams = useContext(TeamsContext);
@@ -17,16 +17,16 @@ export default function Calendar() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get("/api/plan");
+      const { data } = await axios.get(`/api/plan?month=${displayMonth}`);
       console.log("#get plans", data);
       if (dispatch) {
         dispatch({ type: Action.SET, values: data });
       }
     })();
-  }, [dispatch]);
+  }, [displayMonth, dispatch]);
 
   function getDateClasses(date: number) {
-    const target = dayjs(month?.displayMonth).set("date", date);
+    const target = dayjs(displayMonth).set("date", date);
     const day = target.day();
     const isToday = dayjs().isSame(target, "year") && dayjs().isSame(target, "month") && dayjs().isSame(target, "day");
     const isHoliday = japaneseHolidays.isHoliday(target.toDate()) ? true : false;
@@ -38,13 +38,13 @@ export default function Calendar() {
   }
 
   function getDateWithDayChar(date: number) {
-    const target = dayjs(month?.displayMonth).set("date", date);
+    const target = dayjs(displayMonth).set("date", date);
     const dayCharacters = ["日", "月", "火", "水", "木", "金", "土"];
     return `${date} (${dayCharacters[target.day()]})`;
   }
 
   function handleClickCell(plan: IPlan | undefined, date: number, teamId: number) {
-    const dateString = dayjs(month?.displayMonth).set("date", date).format("YYYY-MM-DD");
+    const dateString = dayjs(displayMonth).set("date", date).format("YYYY-MM-DD");
     if (plan !== undefined) {
       setPlan({ ...plan, date: dateString, teamId });
     } else {
@@ -53,7 +53,7 @@ export default function Calendar() {
     setOpen(true);
   }
 
-  function TeamCell({ team }: { team: { id: number; name: string } }) {
+  function HeaderCell({ team }: { team: { id: number; name: string } }) {
     return <div className="border flex items-center justify-center">{team.name}</div>;
   }
 
@@ -72,7 +72,7 @@ export default function Calendar() {
       <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-10 bg-gray-100`}>
         <div className={`border flex items-center justify-center`}></div>
         {teams?.map((team) => (
-          <TeamCell team={team} key={team.id} />
+          <HeaderCell team={team} key={team.id} />
         ))}
       </div>
     );
@@ -93,13 +93,13 @@ export default function Calendar() {
     <div className="grid grid-cols-2 text-gray-600">
       <div>
         <CalendarHeader />
-        {month?.dates.slice(0, 15).map((date) => (
+        {dates.slice(0, 15).map((date) => (
           <CalendarRow key={date} date={date} />
         ))}
       </div>
       <div>
         <CalendarHeader />
-        {month?.dates.slice(15, 31).map((date) => (
+        {dates.slice(15, 31).map((date) => (
           <CalendarRow key={date} date={date} />
         ))}
       </div>
