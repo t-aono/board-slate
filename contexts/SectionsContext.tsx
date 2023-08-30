@@ -9,7 +9,7 @@ export const initialState = [
   { id: 1, name: "営業部" },
   { id: 2, name: "管理部" },
   { id: 3, name: "社長" },
-  // { id: 4, name: "全社" },
+  { id: 4, name: "全社" },
 ];
 
 export const SectionsContext = createContext<typeof initialState | null>(null);

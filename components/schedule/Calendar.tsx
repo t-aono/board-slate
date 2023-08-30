@@ -5,15 +5,16 @@ import { MonthContext } from "../../contexts/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
 import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "@/contexts/PlansContext";
-import { TeamsContext } from "@/contexts/TeamsContext";
+import { SectionsContext } from "@/contexts/SectionsContext";
 
 export default function Calendar() {
   const { displayMonth, dates } = useContext(MonthContext);
   const plans = useContext(PlansContext);
   const dispatch = useContext(PlansDispatchContext);
-  const teams = useContext(TeamsContext);
+  const sections = useContext(SectionsContext);
   const [open, setOpen] = useState(false);
   const [clickedPlan, setPlan] = useState<IPlan>(initialPlan);
+  const gridCols = "grid-cols-[70px," + sections?.map(() => "1fr").join(",") + "]";
 
   useEffect(() => {
     (async () => {
@@ -69,9 +70,9 @@ export default function Calendar() {
 
   function CalendarHeader() {
     return (
-      <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-10 bg-gray-100`}>
+      <div className={`grid ${gridCols} h-10 bg-gray-100`}>
         <div className={`border flex items-center justify-center`}></div>
-        {teams?.map((team) => (
+        {sections?.map((team) => (
           <HeaderCell team={team} key={team.id} />
         ))}
       </div>
@@ -80,9 +81,9 @@ export default function Calendar() {
 
   function CalendarRow({ date }: { date: number }) {
     return (
-      <div className={`grid grid-cols-[70px,1fr,1fr,1fr] h-12`}>
+      <div className={`grid ${gridCols} h-12`}>
         <div className={`border flex items-center justify-center ${getDateClasses(date)}`}>{getDateWithDayChar(date)}</div>
-        {teams?.map((team) => (
+        {sections?.map((team) => (
           <PlanCell key={team.id} date={date} teamId={team.id} />
         ))}
       </div>

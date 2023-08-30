@@ -6,16 +6,16 @@ import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import dayjs from "dayjs";
 import { Action, IPlan, PlansDispatchContext, initialPlan } from "@/contexts/PlansContext";
-import { TeamsContext } from "@/contexts/TeamsContext";
+import { SectionsContext } from "@/contexts/SectionsContext";
 import BaseIcon from "@/components/common/elements/BaseIcon";
 
 export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>; plan: IPlan }) {
   const titleInputRef = useRef(null);
   const dispatch = useContext(PlansDispatchContext);
-  const teams = useContext(TeamsContext);
+  const sections = useContext(SectionsContext);
   const [formValue, setFormValue] = useState<IPlan>(initialPlan);
   const displayDate = plan ? dayjs(plan.date).format("YYYY/MM/DD") : "";
-  const teamName = plan ? teams?.find((team) => team.id === plan.teamId)?.name : "";
+  const teamName = plan ? sections?.find((team) => team.id === plan.teamId)?.name : "";
 
   useEffect(() => {
     if (plan) {

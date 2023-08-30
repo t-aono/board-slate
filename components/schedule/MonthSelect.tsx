@@ -13,7 +13,7 @@ export default function MonthSelect() {
 
   return (
     <div className="flex items-middle text-gray-600">
-      <button className="font-bold px-2" onClick={() => dispatch({ type: Action.CHANGE_PREVIOUS, value: "" })}>
+      <button className="font-bold pr-2" onClick={() => dispatch({ type: Action.CHANGE_PREVIOUS, value: "" })}>
         <BaseIcon>
           <ChevronDoubleLeftIcon />
         </BaseIcon>
@@ -24,7 +24,7 @@ export default function MonthSelect() {
         value={month.displayMonth}
         onChange={(e) => dispatch({ type: Action.CHANGE_VALUE, value: e.target.value })}
       />
-      <button className="font-bold px-2" onClick={() => dispatch({ type: Action.CHANGE_NEXT, value: "" })}>
+      <button className="font-bold pl-2" onClick={() => dispatch({ type: Action.CHANGE_NEXT, value: "" })}>
         <BaseIcon>
           <ChevronDoubleRightIcon />
         </BaseIcon>
