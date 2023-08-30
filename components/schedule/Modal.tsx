@@ -87,7 +87,7 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
                         <p className="text-sm text-gray-600">{displayDate}</p>
                       </div>
                       <div className="mt-4">
-                        <label className="block text-sm text-gray-600 font-bold mb-2">チーム名</label>
+                        <label className="block text-sm text-gray-600 font-bold mb-2">列名</label>
                         <p className="text-sm text-gray-600">{teamName}</p>
                       </div>
                       <div className="mt-4">
