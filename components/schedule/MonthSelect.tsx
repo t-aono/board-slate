@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { Action, MonthContext, MonthDispatchContext } from "../contexts/MonthContext";
+import { Action, MonthContext, MonthDispatchContext } from "@/contexts/MonthContext";
 import { ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/outline";
-import BaseIcon from "@/components/elements/BaseIcon";
+import BaseIcon from "@/components/common/elements/BaseIcon";
 
 export default function MonthSelect() {
   const month = useContext(MonthContext);

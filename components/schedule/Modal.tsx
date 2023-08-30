@@ -2,12 +2,12 @@
 
 import { Dispatch, Fragment, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { CalendarIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Action, IPlan, PlansDispatchContext, initialPlan } from "../contexts/PlansContext";
-import { TeamsContext } from "../contexts/TeamsContext";
-import BaseIcon from "@/components/elements/BaseIcon";
+import { Action, IPlan, PlansDispatchContext, initialPlan } from "@/contexts/PlansContext";
+import { TeamsContext } from "@/contexts/TeamsContext";
+import BaseIcon from "@/components/common/elements/BaseIcon";
 
 export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>>; plan: IPlan }) {
   const titleInputRef = useRef(null);

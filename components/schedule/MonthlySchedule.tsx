@@ -1,5 +1,5 @@
-import Calendar from "@/components/Calendar";
-import MonthSelect from "@/components/MonthSelect";
+import Calendar from "@/components/schedule/Calendar";
+import MonthSelect from "@/components/schedule/MonthSelect";
 import { MonthProvider } from "@/contexts/MonthContext";
 import { PlansProvider } from "@/contexts/PlansContext";
 import { TeamsProvider } from "@/contexts/TeamsContext";

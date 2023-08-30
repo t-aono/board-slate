@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import japaneseHolidays from "japanese-holidays";
 import dayjs from "dayjs";
-import { MonthContext } from "../contexts/MonthContext";
+import { MonthContext } from "../../contexts/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
 import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "@/contexts/PlansContext";
