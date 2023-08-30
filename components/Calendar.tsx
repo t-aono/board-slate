@@ -4,8 +4,8 @@ import dayjs from "dayjs";
 import { MonthContext } from "../contexts/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
-import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "../contexts/PlansContext";
-import { TeamsContext } from "../contexts/TeamsContext";
+import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "@/contexts/PlansContext";
+import { TeamsContext } from "@/contexts/TeamsContext";
 
 export default function Calendar() {
   const { displayMonth, dates } = useContext(MonthContext);
