@@ -1,6 +1,6 @@
 import { QueryDocumentSnapshot, QuerySnapshot } from "firebase-admin/firestore";
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "../firestore";
+import { db } from "../firebase";
 import { firestore } from "firebase-admin";
 
 const COLLECTION_NAME = "sections";
