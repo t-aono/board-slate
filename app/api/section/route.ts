@@ -1,12 +1,13 @@
 import { QueryDocumentSnapshot, QuerySnapshot } from "firebase-admin/firestore";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "../firestore";
+import { firestore } from "firebase-admin";
 
-const COLLECTION_NAME = "plans";
+const COLLECTION_NAME = "sections";
 
 export async function POST(request: NextRequest) {
   const insertData = await request.json();
-  const docRef = await db.collection(COLLECTION_NAME).add(insertData);
+  const docRef = await db.collection(COLLECTION_NAME).add({ ...insertData, created_at: firestore.FieldValue.serverTimestamp() });
   return NextResponse.json({ ...insertData, id: docRef.id });
 }
 
@@ -16,10 +17,8 @@ export async function PATCH(request: NextRequest) {
   return NextResponse.json(updateData);
 }
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const month = searchParams.get("month");
-  const snapshot: QuerySnapshot = await db.collection(COLLECTION_NAME).where("date", ">=", `${month}-01`).where("date", "<=", `${month}-31`).get();
+export async function GET() {
+  const snapshot: QuerySnapshot = await db.collection(COLLECTION_NAME).orderBy("created_at").get();
   const data = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({ ...doc.data(), id: doc.id }));
   return NextResponse.json(data);
 }

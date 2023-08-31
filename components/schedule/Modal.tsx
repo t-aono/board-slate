@@ -15,7 +15,7 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
   const sections = useContext(SectionsContext);
   const [formValue, setFormValue] = useState<IPlan>(initialPlan);
   const displayDate = plan ? dayjs(plan.date).format("YYYY/MM/DD") : "";
-  const teamName = plan ? sections?.find((team) => team.id === plan.teamId)?.name : "";
+  const sectionName = plan ? sections?.find((section) => section.id === plan.sectionId)?.name : "";
 
   useEffect(() => {
     if (plan) {
@@ -73,7 +73,7 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
                       </BaseIcon>
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-4/5">
-                      <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                      <Dialog.Title as="h3" className="text-base leading-6 ">
                         <label className="block text-sm text-gray-600 font-bold mb-2">タイトル</label>
                         <input
                           defaultValue={formValue.title}
@@ -84,11 +84,11 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
                       </Dialog.Title>
                       <div className="mt-4">
                         <label className="block text-sm text-gray-600 font-bold mb-2">日付</label>
-                        <p className="text-sm text-gray-600">{displayDate}</p>
+                        <p className="text-sm text-gray-600 px-3">{displayDate}</p>
                       </div>
                       <div className="mt-4">
                         <label className="block text-sm text-gray-600 font-bold mb-2">列名</label>
-                        <p className="text-sm text-gray-600">{teamName}</p>
+                        <p className="text-sm text-gray-600 px-3">{sectionName}</p>
                       </div>
                       <div className="mt-4">
                         <p className="text-sm text-gray-600">

@@ -5,25 +5,36 @@ import { MonthContext } from "../../contexts/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
 import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "@/contexts/PlansContext";
-import { SectionsContext } from "@/contexts/SectionsContext";
+import { SectionsContext, SectionsDispatchContext } from "@/contexts/SectionsContext";
 
 export default function Calendar() {
   const { displayMonth, dates } = useContext(MonthContext);
   const plans = useContext(PlansContext);
-  const dispatch = useContext(PlansDispatchContext);
+  const plansDispatch = useContext(PlansDispatchContext);
   const sections = useContext(SectionsContext);
+  const sectionsDispatch = useContext(SectionsDispatchContext);
   const [open, setOpen] = useState(false);
   const [clickedPlan, setPlan] = useState<IPlan>(initialPlan);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get(`/api/plan?month=${displayMonth}`);
-      console.log("#get plans", data);
-      if (dispatch) {
-        dispatch({ type: Action.SET, values: data });
+      console.log("$ get plans", data);
+      if (plansDispatch) {
+        plansDispatch({ type: Action.SET, values: data });
       }
     })();
-  }, [displayMonth, dispatch]);
+  }, [displayMonth, plansDispatch]);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get("/api/section");
+      console.log("$ get sections", data);
+      if (sectionsDispatch) {
+        sectionsDispatch({ type: Action.SET, values: data });
+      }
+    })();
+  }, [sectionsDispatch]);
 
   function getDateClasses(date: number) {
     const target = dayjs(displayMonth).set("date", date);
@@ -43,24 +54,20 @@ export default function Calendar() {
     return `${date} (${dayCharacters[target.day()]})`;
   }
 
-  function handleClickCell(plan: IPlan | undefined, date: number, teamId: number) {
+  function handleClickCell(plan: IPlan | undefined, date: number, sectionId: string) {
     const dateString = dayjs(displayMonth).set("date", date).format("YYYY-MM-DD");
     if (plan !== undefined) {
-      setPlan({ ...plan, date: dateString, teamId });
+      setPlan({ ...plan, date: dateString, sectionId });
     } else {
-      setPlan({ ...initialPlan, date: dateString, teamId });
+      setPlan({ ...initialPlan, date: dateString, sectionId });
     }
     setOpen(true);
   }
 
-  function HeaderCell({ team }: { team: { id: number; name: string } }) {
-    return <div className="border flex items-center justify-center">{team.name}</div>;
-  }
-
-  function PlanCell({ date, teamId }: { date: number; teamId: number }) {
-    const planData = plans?.find((plan) => Number(plan.date.split("-")[2]) === date && plan.teamId === teamId);
+  function PlanCell({ date, sectionId }: { date: number; sectionId: string }) {
+    const planData = plans?.find((plan) => Number(plan.date.split("-")[2]) === date && plan.sectionId === sectionId);
     return (
-      <div className="border text-center cursor-pointer" onClick={() => handleClickCell(planData, date, teamId)}>
+      <div className="border text-center cursor-pointer" onClick={() => handleClickCell(planData, date, sectionId)}>
         <div>{planData?.title}</div>
         <div className="text-xs">{planData?.content}</div>
       </div>
@@ -68,13 +75,17 @@ export default function Calendar() {
   }
 
   function CalendarHeader() {
-    // const gridCols = "grid-cols-[70px," + sections?.map(() => "1fr").join(",") + "]";
     return (
       <div className={`grid grid-flow-col auto-cols-fr h-10 bg-gray-100`}>
         <div className={`border flex items-center justify-center`}></div>
-        {sections?.map((team) => (
-          <HeaderCell team={team} key={team.id} />
-        ))}
+        {sections?.map(
+          (section) =>
+            section.visible && (
+              <div key={section.id} className="border flex items-center justify-center">
+                {section.name}
+              </div>
+            )
+        )}
       </div>
     );
   }
@@ -83,9 +94,7 @@ export default function Calendar() {
     return (
       <div className={`grid grid-flow-col auto-cols-fr h-12`}>
         <div className={`border flex items-center justify-center ${getDateClasses(date)}`}>{getDateWithDayChar(date)}</div>
-        {sections?.map((team) => (
-          <PlanCell key={team.id} date={date} teamId={team.id} />
-        ))}
+        {sections?.map((section) => section.visible && <PlanCell key={section.id} date={date} sectionId={section.id} />)}
       </div>
     );
   }

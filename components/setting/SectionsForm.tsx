@@ -2,15 +2,35 @@ import { Action, ISection, SectionsContext, SectionsDispatchContext } from "@/co
 import { ArrowPathIcon, EyeIcon, EyeSlashIcon, PencilIcon, PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useContext, useEffect, useRef, useState } from "react";
 import BaseIcon from "../common/elements/BaseIcon";
+import axios from "axios";
 
 export default function SectionsForm() {
   const sections = useContext(SectionsContext);
   const dispatch = useContext(SectionsDispatchContext);
   const [inputValue, setInputValue] = useState<ISection | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  function handleUpdate() {
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get("/api/section");
+      console.log("$ get sections", data);
+      if (dispatch) {
+        dispatch({ type: Action.SET, values: data });
+      }
+    })();
+  }, [dispatch]);
+
+  async function handleUpdate() {
+    let newValue = null;
+    if (inputValue?.id) {
+      const { data } = await axios.patch("/api/section", { ...inputValue, name: inputRef?.current?.value });
+      newValue = data;
+    } else {
+      const { data } = await axios.post("/api/section", { ...inputValue, name: inputRef?.current?.value });
+      newValue = data;
+    }
     if (dispatch && inputValue) {
-      dispatch({ type: Action.UPDATE, value: inputValue });
+      dispatch({ type: Action.UPDATE, value: newValue });
     }
     setInputValue(null);
   }
@@ -24,19 +44,20 @@ export default function SectionsForm() {
 
   function handleAdd() {
     if (dispatch) {
-      const newValue: ISection = { id: sections.length + 1, name: "", visible: true };
+      const newValue: ISection = { id: "", name: "", visible: true };
       setInputValue(newValue);
       dispatch({ type: Action.ADD, value: newValue });
     }
   }
 
-  function handleVisible(section: ISection) {
+  async function handleVisible(section: ISection) {
+    await axios.patch("/api/section", { ...section });
     if (dispatch) {
       dispatch({ type: Action.UPDATE, value: section });
     }
   }
 
-  function SectionRow({ id, name, visible }: { id: number; name: string; visible: boolean }) {
+  function SectionRow({ id, name, visible }: { id: string; name: string; visible: boolean }) {
     return (
       <>
         <div className={`mb-2 ${!visible ? "line-through" : ""}`}>{name}</div>
@@ -65,8 +86,6 @@ export default function SectionsForm() {
   }
 
   function SectionEditInput() {
-    const inputRef = useRef<HTMLInputElement | null>(null);
-
     useEffect(() => {
       if (inputRef.current) {
         inputRef.current.focus();
@@ -78,11 +97,6 @@ export default function SectionsForm() {
         <input
           defaultValue={inputValue?.name}
           ref={inputRef}
-          onChange={(e) => {
-            if (inputValue?.id) {
-              setInputValue({ ...inputValue, name: e.target.value });
-            }
-          }}
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
         />
         <div className="flex justify-end gap-4">

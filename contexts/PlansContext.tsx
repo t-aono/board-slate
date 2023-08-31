@@ -8,7 +8,7 @@ export interface IPlan {
   title: string;
   content: string;
   date: string;
-  teamId: number;
+  sectionId: string;
 }
 
 export const initialPlan = {
@@ -16,7 +16,7 @@ export const initialPlan = {
   title: "",
   content: "",
   date: "",
-  teamId: 0,
+  sectionId: "",
 };
 
 export const initialState: IPlan[] = [initialPlan];
