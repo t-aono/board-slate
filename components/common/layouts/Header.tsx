@@ -3,13 +3,28 @@ import Link from "next/link";
 import BaseIcon from "../elements/BaseIcon";
 import { useState } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
-import LoggedInUser from "../elements/LoggedInUser";
+import LoggedInUserIcon from "../elements/LoggedInUserIcon";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "@/firebase";
+import UserInfo from "../elements/UserInfo";
 
 export default function Header() {
-  const [viewLogout, setViewLogout] = useState(false);
+  const [viewItem, setViewItem] = useState(0);
   const auth = getAuth(app);
+
+  function LogoutButton() {
+    return (
+      <div className="absolute top-10 right-0 bg-gray-200 px-4 py-2" onMouseLeave={() => setViewItem(0)}>
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          onClick={handleLogout}
+        >
+          ログアウト
+        </button>
+      </div>
+    );
+  }
 
   async function handleLogout() {
     await signOut(auth);
@@ -33,21 +48,14 @@ export default function Header() {
                 <AdjustmentsHorizontalIcon />
               </BaseIcon>
             </Link>
-            <BaseIcon onMouseEnter={() => setViewLogout(true)}>
-              <ArrowLeftOnRectangleIcon />
-            </BaseIcon>
-            {viewLogout && (
-              <div className="absolute top-10 right-0 bg-gray-200 px-4 py-2" onMouseLeave={() => setViewLogout(false)}>
-                <button
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  type="button"
-                  onClick={handleLogout}
-                >
-                  ログアウト
-                </button>
-              </div>
-            )}
-            <LoggedInUser />
+            <div className="flex gap-x-4">
+              <LoggedInUserIcon onMouseEnter={() => setViewItem(1)} />
+              {viewItem === 1 && <UserInfo onMouseLeave={() => setViewItem(0)} />}
+              <BaseIcon onMouseEnter={() => setViewItem(2)}>
+                <ArrowLeftOnRectangleIcon />
+              </BaseIcon>
+              {viewItem === 2 && <LogoutButton />}
+            </div>
           </div>
         </div>
       </AuthProvider>
