@@ -1,8 +1,9 @@
 import { Action, ISection, SectionsContext, SectionsDispatchContext } from "@/contexts/SectionsContext";
-import { ArrowPathIcon, EyeIcon, EyeSlashIcon, PencilIcon, PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon, EyeIcon, EyeSlashIcon, PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useContext, useEffect, useRef, useState } from "react";
 import BaseIcon from "../common/elements/BaseIcon";
 import axios from "axios";
+import MultiRowLayout from "./MultiRowLayout";
 
 export default function SectionsForm() {
   const sections = useContext(SectionsContext);
@@ -116,23 +117,13 @@ export default function SectionsForm() {
   }
 
   return (
-    <div className="w-1/2 mx-auto text-gray-600">
-      <label className="text-lg font-bold">列名一覧</label>
-      <div className="mt-3 px-2">
-        {sections &&
-          sections.map(({ id, name, visible }) => (
-            <div key={id} className="flex justify-between border-b-2 mt-6 gap-6">
-              {inputValue && inputValue.id === id ? <SectionEditInput /> : <SectionRow id={id} name={name} visible={visible} />}
-            </div>
-          ))}
-        <div className="mt-6">
-          <button onClick={handleAdd}>
-            <BaseIcon>
-              <PlusCircleIcon />
-            </BaseIcon>
-          </button>
-        </div>
-      </div>
-    </div>
+    <MultiRowLayout title="列名" handleAdd={handleAdd}>
+      {sections &&
+        sections.map(({ id, name, visible }) => (
+          <div key={id} className="flex justify-between border-b-2 mt-6 gap-6">
+            {inputValue && inputValue.id === id ? <SectionEditInput /> : <SectionRow id={id} name={name} visible={visible} />}
+          </div>
+        ))}
+    </MultiRowLayout>
   );
 }
