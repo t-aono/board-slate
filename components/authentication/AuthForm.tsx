@@ -4,20 +4,13 @@ import Alert from "../common/elements/Alert";
 
 export default function AuthForm({
   buttonLabel,
-  link,
   onRequest,
-  alert,
-  setAlert,
 }: {
   buttonLabel: string;
-  link: ReactNode;
   onRequest: ({ email, password }: { email: string; password: string }) => Promise<void>;
-  alert: string;
-  setAlert: Dispatch<SetStateAction<string>>;
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [alert, setAlert] = useState("");
 
   return (
     <div className="w-full max-w-xs mx-auto">
@@ -40,18 +33,16 @@ export default function AuthForm({
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="flex items-center justify-between">
+        <div>
           <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
             type="button"
             onClick={() => onRequest({ email, password })}
           >
             {buttonLabel}
           </button>
-          <div className="text-sm">{link}</div>
         </div>
       </form>
-      <Alert message={alert} onClose={() => setAlert("")} />
     </div>
   );
 }

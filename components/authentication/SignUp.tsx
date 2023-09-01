@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import AuthForm from "./AuthForm";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Alert from "../common/elements/Alert";
 
 export default function SingUp() {
   const router = useRouter();
@@ -19,5 +19,12 @@ export default function SingUp() {
     }
   }
 
-  return <AuthForm buttonLabel="サインアップ" link={<Link href="/login">ログインへ</Link>} onRequest={signUpRequest} alert={alert} setAlert={setAlert} />;
+  return (
+    <>
+      <AuthForm buttonLabel="サインアップ" onRequest={signUpRequest} />;
+      <div className="w-1/2 mx-auto">
+        <Alert message={alert} onClose={() => setAlert("")} />
+      </div>
+    </>
+  );
 }

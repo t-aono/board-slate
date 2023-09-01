@@ -19,6 +19,7 @@
     "dayjs": "^1.11.9",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "firebase": "^10.3.1",
     "firebase-admin": "^11.10.1",
     "japanese-holidays": "^1.0.10",
     "next": "13.4.12",
