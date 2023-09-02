@@ -15,7 +15,7 @@ export default function Modal({ open, setOpen, plan }: { open: boolean; setOpen:
   const sections = useContext(SectionsContext);
   const [formValue, setFormValue] = useState<IPlan>(initialPlan);
   const displayDate = plan ? dayjs(plan.date).format("YYYY/MM/DD") : "";
-  const sectionName = plan ? sections?.find((section) => section.id === plan.sectionId)?.name : "";
+  const sectionName = plan ? sections?.find((section) => section.id === plan.section_id)?.name : "";
 
   useEffect(() => {
     if (plan) {

@@ -4,6 +4,7 @@ export interface ISection {
   id: string;
   name: string;
   visible: boolean;
+  organization_id: string;
 }
 
 export const initialState: ISection[] = [];

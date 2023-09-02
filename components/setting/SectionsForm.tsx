@@ -19,7 +19,7 @@ export default function SectionsForm() {
       const { data } = await axios.patch("/api/section", { ...inputValue, name: inputRef?.current?.value });
       newValue = data;
     } else {
-      const { data } = await axios.post("/api/section", { ...inputValue, name: inputRef?.current?.value, organization_id: organization.id });
+      const { data } = await axios.post("/api/section", { ...inputValue, name: inputRef?.current?.value });
       newValue = data;
     }
     if (dispatch && inputValue) {
@@ -37,7 +37,7 @@ export default function SectionsForm() {
 
   function handleAdd() {
     if (dispatch) {
-      const newValue: ISection = { id: "", name: "", visible: true };
+      const newValue: ISection = { id: "", name: "", visible: true, organization_id: organization.id };
       setInputValue(newValue);
       dispatch({ type: Action.ADD, value: newValue });
     }
@@ -50,24 +50,24 @@ export default function SectionsForm() {
     }
   }
 
-  function SectionRow({ id, name, visible }: { id: string; name: string; visible: boolean }) {
+  function SectionRow(section: ISection) {
     return (
       <>
-        <div className={`mb-2 ${!visible ? "line-through" : ""}`}>{name}</div>
+        <div className={`mb-2 ${!section.visible ? "line-through" : ""}`}>{section.name}</div>
         <div className="flex justify-end gap-4">
-          <button onClick={() => setInputValue({ id, name, visible })}>
+          <button onClick={() => setInputValue(section)}>
             <BaseIcon>
               <PencilIcon />
             </BaseIcon>
           </button>
-          {visible ? (
-            <button onClick={() => handleVisible({ id, name, visible: false })}>
+          {section.visible ? (
+            <button onClick={() => handleVisible({ ...section, visible: false })}>
               <BaseIcon>
                 <EyeSlashIcon />
               </BaseIcon>
             </button>
           ) : (
-            <button onClick={() => handleVisible({ id, name, visible: true })}>
+            <button onClick={() => handleVisible({ ...section, visible: true })}>
               <BaseIcon>
                 <EyeIcon />
               </BaseIcon>
@@ -111,9 +111,9 @@ export default function SectionsForm() {
   return (
     <MultiRowLayout title="列名" handleAdd={handleAdd}>
       {sections &&
-        sections.map(({ id, name, visible }) => (
-          <div key={id} className="flex justify-between border-b-2 mt-6 gap-6">
-            {inputValue && inputValue.id === id ? <SectionEditInput /> : <SectionRow id={id} name={name} visible={visible} />}
+        sections.map((section) => (
+          <div key={section.id} className="flex justify-between border-b-2 mt-6 gap-6">
+            {inputValue && inputValue.id === section.id ? <SectionEditInput /> : <SectionRow {...section} />}
           </div>
         ))}
     </MultiRowLayout>

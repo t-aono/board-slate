@@ -43,20 +43,20 @@ export default function Calendar() {
     return `${date} (${dayCharacters[target.day()]})`;
   }
 
-  function handleClickCell(plan: IPlan | undefined, date: number, sectionId: string) {
+  function handleClickCell(plan: IPlan | undefined, date: number, section_id: string) {
     const dateString = dayjs(displayMonth).set("date", date).format("YYYY-MM-DD");
     if (plan !== undefined) {
-      setPlan({ ...plan, date: dateString, sectionId });
+      setPlan({ ...plan, date: dateString, section_id });
     } else {
-      setPlan({ ...initialPlan, date: dateString, sectionId });
+      setPlan({ ...initialPlan, date: dateString, section_id });
     }
     setOpen(true);
   }
 
-  function PlanCell({ date, sectionId }: { date: number; sectionId: string }) {
-    const planData = plans?.find((plan) => Number(plan.date.split("-")[2]) === date && plan.sectionId === sectionId);
+  function PlanCell({ date, section_id }: { date: number; section_id: string }) {
+    const planData = plans?.find((plan) => Number(plan.date.split("-")[2]) === date && plan.section_id === section_id);
     return (
-      <div className="border text-center cursor-pointer" onClick={() => handleClickCell(planData, date, sectionId)}>
+      <div className="border text-center cursor-pointer" onClick={() => handleClickCell(planData, date, section_id)}>
         <div>{planData?.title}</div>
         <div className="text-xs">{planData?.content}</div>
       </div>
@@ -83,7 +83,7 @@ export default function Calendar() {
     return (
       <div className={`grid grid-flow-col auto-cols-fr h-12`}>
         <div className={`border flex items-center justify-center ${getDateClasses(date)}`}>{getDateWithDayChar(date)}</div>
-        {sections?.map((section) => section.visible && <PlanCell key={section.id} date={date} sectionId={section.id} />)}
+        {sections?.map((section) => section.visible && <PlanCell key={section.id} date={date} section_id={section.id} />)}
       </div>
     );
   }
