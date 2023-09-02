@@ -4,22 +4,14 @@ import { useContext, useEffect, useRef, useState } from "react";
 import BaseIcon from "../common/elements/BaseIcon";
 import axios from "axios";
 import MultiRowLayout from "./MultiRowLayout";
+import { OrganizationContext } from "@/contexts/OrganizationContext";
 
 export default function SectionsForm() {
   const sections = useContext(SectionsContext);
   const dispatch = useContext(SectionsDispatchContext);
+  const organization = useContext(OrganizationContext);
   const [inputValue, setInputValue] = useState<ISection | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await axios.get("/api/section");
-      console.log("$ get sections", data);
-      if (dispatch) {
-        dispatch({ type: Action.SET, values: data });
-      }
-    })();
-  }, [dispatch]);
 
   async function handleUpdate() {
     let newValue = null;
@@ -27,7 +19,7 @@ export default function SectionsForm() {
       const { data } = await axios.patch("/api/section", { ...inputValue, name: inputRef?.current?.value });
       newValue = data;
     } else {
-      const { data } = await axios.post("/api/section", { ...inputValue, name: inputRef?.current?.value });
+      const { data } = await axios.post("/api/section", { ...inputValue, name: inputRef?.current?.value, organization_id: organization.id });
       newValue = data;
     }
     if (dispatch && inputValue) {

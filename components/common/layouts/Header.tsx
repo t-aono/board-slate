@@ -2,7 +2,6 @@ import { AdjustmentsHorizontalIcon, ArrowLeftOnRectangleIcon, TableCellsIcon } f
 import Link from "next/link";
 import BaseIcon from "../elements/BaseIcon";
 import { useState } from "react";
-import { AuthProvider } from "@/contexts/AuthContext";
 import LoggedInUserIcon from "../elements/LoggedInUserIcon";
 import { getAuth, signOut } from "firebase/auth";
 import { app } from "@/firebase";
@@ -14,7 +13,7 @@ export default function Header() {
 
   function LogoutButton() {
     return (
-      <div className="absolute top-10 right-0 bg-gray-200 px-4 py-2" onMouseLeave={() => setViewItem(0)}>
+      <div className="absolute top-10 right-0 bg-gray-200 px-4 py-2">
         <button
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
@@ -32,33 +31,31 @@ export default function Header() {
 
   return (
     <header className="bg-gray-200 h-10">
-      <AuthProvider>
-        <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center">
+        <Link href="/">
+          <h1 className="py-2 px-4">Board Slate</h1>
+        </Link>
+        <div className="py-2 px-4 flex gap-8">
           <Link href="/">
-            <h1 className="py-2 px-4">Board Slate</h1>
+            <BaseIcon>
+              <TableCellsIcon />
+            </BaseIcon>
           </Link>
-          <div className="py-2 px-4 flex gap-8">
-            <Link href="/">
-              <BaseIcon>
-                <TableCellsIcon />
-              </BaseIcon>
-            </Link>
-            <Link href="/setting">
-              <BaseIcon>
-                <AdjustmentsHorizontalIcon />
-              </BaseIcon>
-            </Link>
-            <div className="flex gap-x-4">
-              <LoggedInUserIcon onMouseEnter={() => setViewItem(1)} />
-              {viewItem === 1 && <UserInfo onMouseLeave={() => setViewItem(0)} />}
-              <BaseIcon onMouseEnter={() => setViewItem(2)}>
-                <ArrowLeftOnRectangleIcon />
-              </BaseIcon>
-              {viewItem === 2 && <LogoutButton />}
-            </div>
+          <Link href="/setting">
+            <BaseIcon>
+              <AdjustmentsHorizontalIcon />
+            </BaseIcon>
+          </Link>
+          <div className="flex gap-x-4 cursor-pointer">
+            <LoggedInUserIcon onClick={() => setViewItem(viewItem ? 0 : 1)} />
+            {viewItem === 1 && <UserInfo />}
+            <BaseIcon onClick={() => setViewItem(viewItem ? 0 : 2)}>
+              <ArrowLeftOnRectangleIcon />
+            </BaseIcon>
+            {viewItem === 2 && <LogoutButton />}
           </div>
         </div>
-      </AuthProvider>
+      </div>
     </header>
   );
 }

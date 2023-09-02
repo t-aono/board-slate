@@ -5,14 +5,13 @@ import { MonthContext } from "../../contexts/MonthContext";
 import Modal from "./Modal";
 import axios from "axios";
 import { Action, IPlan, PlansContext, PlansDispatchContext, initialPlan } from "@/contexts/PlansContext";
-import { SectionsContext, SectionsDispatchContext } from "@/contexts/SectionsContext";
+import { SectionsContext } from "@/contexts/SectionsContext";
 
 export default function Calendar() {
   const { displayMonth, dates } = useContext(MonthContext);
   const plans = useContext(PlansContext);
   const plansDispatch = useContext(PlansDispatchContext);
   const sections = useContext(SectionsContext);
-  const sectionsDispatch = useContext(SectionsDispatchContext);
   const [open, setOpen] = useState(false);
   const [clickedPlan, setPlan] = useState<IPlan>(initialPlan);
 
@@ -25,16 +24,6 @@ export default function Calendar() {
       }
     })();
   }, [displayMonth, plansDispatch]);
-
-  useEffect(() => {
-    (async () => {
-      const { data } = await axios.get("/api/section");
-      console.log("$ get sections", data);
-      if (sectionsDispatch) {
-        sectionsDispatch({ type: Action.SET, values: data });
-      }
-    })();
-  }, [sectionsDispatch]);
 
   function getDateClasses(date: number) {
     const target = dayjs(displayMonth).set("date", date);

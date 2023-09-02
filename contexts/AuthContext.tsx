@@ -6,17 +6,12 @@ import { app } from "@/firebase";
 
 export type UserType = User | null;
 
-export type AuthContextProps = {
-  user: UserType;
-};
-
-export const AuthContext = createContext<Partial<AuthContextProps>>({});
+export const AuthContext = createContext<Partial<UserType>>({});
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const auth = getAuth(app);
   const [user, setUser] = useState<UserType>(null);
-  const value = { user };
 
   useEffect(() => {
     const authStateChanged = onAuthStateChanged(auth, async (user) => {
@@ -28,5 +23,5 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 };
