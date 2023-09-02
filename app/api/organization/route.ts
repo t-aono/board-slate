@@ -10,6 +10,12 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ ...insertData, id: docRef.id });
 }
 
+export async function PATCH(request: NextRequest) {
+  const updateData = await request.json();
+  db.collection(COLLECTION_NAME).doc(updateData.id).update(updateData);
+  return NextResponse.json(updateData);
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const name = searchParams.get("name");

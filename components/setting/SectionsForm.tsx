@@ -1,5 +1,5 @@
 import { Action, ISection, SectionsContext, SectionsDispatchContext } from "@/contexts/SectionsContext";
-import { ArrowPathIcon, EyeIcon, EyeSlashIcon, PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon, EyeIcon, EyeSlashIcon, PencilIcon, PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useContext, useEffect, useRef, useState } from "react";
 import BaseIcon from "../common/elements/BaseIcon";
 import axios from "axios";
@@ -99,13 +99,20 @@ export default function SectionsForm() {
   }
 
   return (
-    <MultiRowLayout title="列名" handleAdd={handleAdd}>
+    <MultiRowLayout title="列名">
       {sections &&
         sections.map((section) => (
           <div key={section.id} className="flex justify-between border-b-2 mt-6 gap-6">
             {inputValue && inputValue.id === section.id ? <SectionEditInput /> : <SectionRow {...section} />}
           </div>
         ))}
+      {!inputValue && (
+        <div className="mt-6">
+          <button onClick={handleAdd}>
+            <BaseIcon icon={<PlusCircleIcon />} />
+          </button>
+        </div>
+      )}
     </MultiRowLayout>
   );
 }

@@ -6,13 +6,15 @@ import { Action, SectionsDispatchContext } from "./SectionsContext";
 export interface IOrganization {
   id: string;
   name: string;
-  admin_uid: string;
+  admin_uid?: string;
+  member_uids?: string[];
 }
 
 const initialState = {
   id: "",
   name: "",
   admin_uid: "",
+  member_uids: [],
 };
 
 export const OrganizationContext = createContext<IOrganization>(initialState);
