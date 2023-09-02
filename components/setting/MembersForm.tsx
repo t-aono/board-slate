@@ -1,18 +1,27 @@
+import { UserType } from "@/contexts/AuthContext";
 import MultiRowLayout from "./MultiRowLayout";
+import { User } from "firebase/auth";
+import BaseIcon from "../common/elements/BaseIcon";
+import { LockOpenIcon } from "@heroicons/react/24/outline";
 
 export default function MembersForm() {
-  const members = [
-    { id: "1", name: "aaa" },
-    { id: "2", name: "bbb" },
-    { id: "3", name: "ccc" },
+  const members: Partial<User>[] = [
+    { uid: "1", email: "user1@ne.jp" },
+    { uid: "2", email: "user2@ne.jp" },
+    { uid: "3", email: "user3@ne.jp" },
   ];
 
   return (
     <MultiRowLayout title="メンバー" handleAdd={() => {}}>
       {members &&
-        members.map(({ id, name }) => (
-          <div key={id} className="flex justify-between border-b-2 mt-6 gap-6">
-            {name}
+        members.map(({ uid, email }) => (
+          <div key={uid} className="flex justify-between border-b-2 mt-6 gap-6">
+            {email}
+            <div className="flex justify-end gap-4">
+              <button onClick={() => {}}>
+                <BaseIcon icon={<LockOpenIcon />} />
+              </button>
+            </div>
           </div>
         ))}
     </MultiRowLayout>

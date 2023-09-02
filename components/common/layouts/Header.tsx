@@ -37,21 +37,15 @@ export default function Header() {
         </Link>
         <div className="py-2 px-4 flex gap-8">
           <Link href="/">
-            <BaseIcon>
-              <TableCellsIcon />
-            </BaseIcon>
+            <BaseIcon icon={<TableCellsIcon />} />
           </Link>
           <Link href="/setting">
-            <BaseIcon>
-              <AdjustmentsHorizontalIcon />
-            </BaseIcon>
+            <BaseIcon icon={<AdjustmentsHorizontalIcon />} />
           </Link>
           <div className="flex gap-x-4 cursor-pointer">
             <LoggedInUserIcon onClick={() => setViewItem(viewItem ? 0 : 1)} />
             {viewItem === 1 && <UserInfo />}
-            <BaseIcon onClick={() => setViewItem(viewItem ? 0 : 2)}>
-              <ArrowLeftOnRectangleIcon />
-            </BaseIcon>
+            <BaseIcon icon={<ArrowLeftOnRectangleIcon />} onClick={() => setViewItem(viewItem ? 0 : 2)} />
             {viewItem === 2 && <LogoutButton />}
           </div>
         </div>

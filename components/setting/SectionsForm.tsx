@@ -56,21 +56,15 @@ export default function SectionsForm() {
         <div className={`mb-2 ${!section.visible ? "line-through" : ""}`}>{section.name}</div>
         <div className="flex justify-end gap-4">
           <button onClick={() => setInputValue(section)}>
-            <BaseIcon>
-              <PencilIcon />
-            </BaseIcon>
+            <BaseIcon icon={<PencilIcon />} />
           </button>
           {section.visible ? (
             <button onClick={() => handleVisible({ ...section, visible: false })}>
-              <BaseIcon>
-                <EyeSlashIcon />
-              </BaseIcon>
+              <BaseIcon icon={<EyeSlashIcon />} />
             </button>
           ) : (
             <button onClick={() => handleVisible({ ...section, visible: true })}>
-              <BaseIcon>
-                <EyeIcon />
-              </BaseIcon>
+              <BaseIcon icon={<EyeIcon />} />
             </button>
           )}
         </div>
@@ -94,14 +88,10 @@ export default function SectionsForm() {
         />
         <div className="flex justify-end gap-4">
           <button onClick={handleUpdate}>
-            <BaseIcon>
-              <ArrowPathIcon />
-            </BaseIcon>
+            <BaseIcon icon={<ArrowPathIcon />} />
           </button>
           <button onClick={handleClose}>
-            <BaseIcon>
-              <XMarkIcon />
-            </BaseIcon>
+            <BaseIcon icon={<XMarkIcon />} />
           </button>
         </div>
       </>

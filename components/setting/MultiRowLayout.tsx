@@ -10,9 +10,7 @@ export default function MultiRowLayout({ title, handleAdd, children }: { title: 
         {children}
         <div className="mt-6">
           <button onClick={handleAdd}>
-            <BaseIcon>
-              <PlusCircleIcon />
-            </BaseIcon>
+            <BaseIcon icon={<PlusCircleIcon />} />
           </button>
         </div>
       </div>
