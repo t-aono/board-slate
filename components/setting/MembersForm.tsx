@@ -1,7 +1,7 @@
 import MultiRowLayout from "./MultiRowLayout";
 import { User } from "firebase/auth";
 import BaseIcon from "../common/elements/BaseIcon";
-import { LockOpenIcon, PlusCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { PlusCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { useContext, useEffect, useState } from "react";
 import AuthForm from "../authentication/AuthForm";
 import axios from "axios";
@@ -49,11 +49,6 @@ export default function MembersForm() {
         members.map(({ uid, email }) => (
           <div key={uid} className="flex justify-between border-b-2 mt-6 gap-6">
             {email}
-            <div className="flex justify-end gap-4">
-              <button onClick={() => {}}>
-                <BaseIcon icon={<LockOpenIcon />} />
-              </button>
-            </div>
           </div>
         ))}
       <div className="mt-6">
