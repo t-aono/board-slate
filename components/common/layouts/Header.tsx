@@ -31,7 +31,7 @@ export default function Header() {
     await signOut(auth);
   }
 
-  function menuLinks() {
+  function MenuLinks() {
     return (
       <>
         <Link href="/">
@@ -50,7 +50,7 @@ export default function Header() {
     );
   }
 
-  function authLink() {
+  function AuthLink() {
     return pathname === "/login" ? <Link href="/signup">サインアップ</Link> : <Link href="/login">ログイン</Link>;
   }
 
@@ -60,7 +60,7 @@ export default function Header() {
         <Link href="/">
           <h1 className="py-2 px-4">Board Slate</h1>
         </Link>
-        <div className="py-2 px-4 flex gap-8">{user ? menuLinks() : authLink()}</div>
+        <div className="py-2 px-4 flex gap-8">{user ? <MenuLinks /> : <AuthLink />}</div>
       </div>
     </header>
   );
