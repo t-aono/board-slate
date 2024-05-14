@@ -3,15 +3,15 @@
 import AuthForm from "./AuthForm";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Alert from "../common/elements/Alert";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "@/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { AuthContext } from "@/contexts/AuthContext";
 
 export default function SingUp() {
   const router = useRouter();
   const [alert, setAlert] = useState("");
-  const auth = getAuth(app);
+  const { auth } = useContext(AuthContext);
 
   async function signUpRequest({ email, password, organization }: { email: string; password: string; organization?: string }) {
     if (organization) {
@@ -40,7 +40,7 @@ export default function SingUp() {
 
   return (
     <>
-      <AuthForm buttonLabel="サインアップ" onRequest={signUpRequest} organizationInput={true} />;
+      <AuthForm buttonLabel="サインアップ" onRequest={signUpRequest} organizationInput={true} />
       <div className="w-1/2 mx-auto">
         <Alert message={alert} onClose={() => setAlert("")} />
       </div>

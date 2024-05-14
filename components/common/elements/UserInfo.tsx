@@ -3,7 +3,7 @@ import { OrganizationContext } from "@/contexts/OrganizationContext";
 import { useContext } from "react";
 
 export default function UserInfo() {
-  const user = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const organization = useContext(OrganizationContext);
 
   return (

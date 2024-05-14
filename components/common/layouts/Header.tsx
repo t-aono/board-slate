@@ -1,15 +1,15 @@
 import { AdjustmentsHorizontalIcon, ArrowLeftOnRectangleIcon, TableCellsIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import BaseIcon from "../elements/BaseIcon";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import LoggedInUserIcon from "../elements/LoggedInUserIcon";
-import { getAuth, signOut } from "firebase/auth";
-import { app } from "@/firebase";
+import { signOut } from "firebase/auth";
 import UserInfo from "../elements/UserInfo";
+import { AuthContext } from "@/contexts/AuthContext";
 
 export default function Header() {
   const [viewItem, setViewItem] = useState(0);
-  const auth = getAuth(app);
+  const { auth } = useContext(AuthContext);
 
   function LogoutButton() {
     return (

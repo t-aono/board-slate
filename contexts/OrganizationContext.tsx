@@ -21,7 +21,7 @@ export const OrganizationContext = createContext<IOrganization>(initialState);
 
 export const OrganizationProvider = ({ children }: { children: ReactNode }) => {
   const [organization, setOrganization] = useState<IOrganization>(initialState);
-  const user = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const dispatch = useContext(SectionsDispatchContext);
 
   useEffect(() => {
