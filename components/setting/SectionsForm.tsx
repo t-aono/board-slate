@@ -53,7 +53,7 @@ export default function SectionsForm() {
   function SectionRow(section: ISection) {
     return (
       <>
-        <div className={`mb-2 ${!section.visible ? "line-through" : ""}`}>{section.name}</div>
+        <div className={`mb-2 ${!section.visible ? "line-through opacity-20" : ""}`}>{section.name}</div>
         <div className="flex justify-end gap-4">
           <button onClick={() => setInputValue(section)}>
             <BaseIcon icon={<PencilIcon />} />

@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 
 export default function AuthForm({
   buttonLabel,
@@ -15,7 +15,7 @@ export default function AuthForm({
   const [password, setPassword] = useState("");
 
   return (
-    <div className="w-full max-w-xs mx-auto">
+    <div className="w-full max-w-xs mx-auto z-10 relative bottom-48">
       <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         {organizationInput && (
           <div className="mb-4">
