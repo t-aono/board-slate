@@ -29,7 +29,7 @@ export default function MembersForm() {
   async function addUserRequest({ email, password }: { email: string; password: string }) {
     const { data: userData }: { data: User & { code: string; message: string } } = await axios.post(`/api/authentication/signup`, { email, password });
     if (userData.uid && organization.id) {
-      const newMembers = organization.member_uids ? [...organization.member_uids, userData.uid] : [userData.uid];
+      const newMembers = [...(organization.member_uids || []), userData.uid];
       const { data: updatedOrganization }: { data: IOrganization & { code: string; message: string } } = await axios.patch(`/api/organization`, {
         ...organization,
         member_uids: newMembers,
