@@ -9,7 +9,7 @@ import { ReactNode } from "react";
 
 export default function Template({ children }: { children: ReactNode }) {
   return (
-    <div>
+    <div className="overflow-scroll">
       <AuthProvider>
         <SectionsProvider>
           <OrganizationProvider>

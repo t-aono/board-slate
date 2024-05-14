@@ -99,7 +99,7 @@ export default function SectionsForm() {
   }
 
   return (
-    <MultiRowLayout title="列名">
+    <MultiRowLayout title="チーム名">
       {sections &&
         sections.map((section) => (
           <div key={section.id} className="flex justify-between border-b-2 mt-6 gap-6">
