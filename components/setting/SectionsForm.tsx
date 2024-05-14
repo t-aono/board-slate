@@ -53,7 +53,7 @@ export default function SectionsForm() {
   function SectionRow(section: ISection) {
     return (
       <>
-        <div className={`mb-2 ${!section.visible ? "line-through" : ""}`}>{section.name}</div>
+        <div className={`mb-2 ${!section.visible ? "line-through opacity-20" : ""}`}>{section.name}</div>
         <div className="flex justify-end gap-4">
           <button onClick={() => setInputValue(section)}>
             <BaseIcon icon={<PencilIcon />} />
@@ -99,7 +99,7 @@ export default function SectionsForm() {
   }
 
   return (
-    <MultiRowLayout title="列名">
+    <MultiRowLayout title="チーム名">
       {sections &&
         sections.map((section) => (
           <div key={section.id} className="flex justify-between border-b-2 mt-6 gap-6">

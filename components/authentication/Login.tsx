@@ -2,17 +2,17 @@
 
 import AuthForm from "./AuthForm";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { app } from "@/firebase";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useContext, useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import Alert from "../common/elements/Alert";
+import { AuthContext } from "@/contexts/AuthContext";
 
 export default function Login() {
   const router = useRouter();
   const [alert, setAlert] = useState("");
+  const { auth } = useContext(AuthContext);
 
   function loginRequest({ email, password }: { email: string; password: string }) {
-    const auth = getAuth(app);
     return signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
         if (user.uid) router.push("/");
@@ -42,7 +42,7 @@ export default function Login() {
 
   return (
     <>
-      <AuthForm buttonLabel="ログイン" onRequest={loginRequest} />;
+      <AuthForm buttonLabel="ログイン" onRequest={loginRequest} />
       <div className="w-1/3 mx-auto">
         <Alert message={alert} onClose={() => setAlert("")} />
       </div>
