@@ -42,7 +42,7 @@ export default function Login() {
 
   return (
     <>
-      <AuthForm buttonLabel="ログイン" onRequest={loginRequest} />;
+      <AuthForm buttonLabel="ログイン" onRequest={loginRequest} />
       <div className="w-1/3 mx-auto">
         <Alert message={alert} onClose={() => setAlert("")} />
       </div>
