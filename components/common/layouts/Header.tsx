@@ -6,10 +6,12 @@ import LoggedInUserIcon from "../elements/LoggedInUserIcon";
 import { signOut } from "firebase/auth";
 import UserInfo from "../elements/UserInfo";
 import { AuthContext } from "@/contexts/AuthContext";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const [viewItem, setViewItem] = useState(0);
-  const { auth } = useContext(AuthContext);
+  const { auth, user } = useContext(AuthContext);
+  const pathname = usePathname();
 
   function LogoutButton() {
     return (
@@ -29,26 +31,36 @@ export default function Header() {
     await signOut(auth);
   }
 
+  function menuLinks() {
+    return (
+      <>
+        <Link href="/">
+          <BaseIcon icon={<TableCellsIcon />} />
+        </Link>
+        <Link href="/setting">
+          <BaseIcon icon={<AdjustmentsHorizontalIcon />} />
+        </Link>
+        <div className="flex gap-x-4 cursor-pointer">
+          <LoggedInUserIcon onClick={() => setViewItem(viewItem ? 0 : 1)} />
+          {viewItem === 1 && <UserInfo />}
+          <BaseIcon icon={<ArrowLeftOnRectangleIcon />} onClick={() => setViewItem(viewItem ? 0 : 2)} />
+          {viewItem === 2 && <LogoutButton />}
+        </div>
+      </>
+    );
+  }
+
+  function authLink() {
+    return pathname === "/login" ? <Link href="/signup">サインアップ</Link> : <Link href="/login">ログイン</Link>;
+  }
+
   return (
     <header className="bg-gray-200 h-10">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/">
           <h1 className="py-2 px-4">Board Slate</h1>
         </Link>
-        <div className="py-2 px-4 flex gap-8">
-          <Link href="/">
-            <BaseIcon icon={<TableCellsIcon />} />
-          </Link>
-          <Link href="/setting">
-            <BaseIcon icon={<AdjustmentsHorizontalIcon />} />
-          </Link>
-          <div className="flex gap-x-4 cursor-pointer">
-            <LoggedInUserIcon onClick={() => setViewItem(viewItem ? 0 : 1)} />
-            {viewItem === 1 && <UserInfo />}
-            <BaseIcon icon={<ArrowLeftOnRectangleIcon />} onClick={() => setViewItem(viewItem ? 0 : 2)} />
-            {viewItem === 2 && <LogoutButton />}
-          </div>
-        </div>
+        <div className="py-2 px-4 flex gap-8">{user ? menuLinks() : authLink()}</div>
       </div>
     </header>
   );
